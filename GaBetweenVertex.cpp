@@ -18,6 +18,8 @@ void GaBetweenVertex::startData(int s, int t, Problem graph)
 
 vector<vector<long long>> GaBetweenVertex::Genetic(int Gm)
 {
+	unsigned int start_time = clock();
+
 	srand(time(0));
 	for (size_t i = 0; i < populationSize; i++)
 	{
@@ -45,12 +47,12 @@ vector<vector<long long>> GaBetweenVertex::Genetic(int Gm)
 				child = Crossover(population[p1], population[p2]);
 				for (size_t j = 0; j < child.size(); j++)
 				{
-				  double Mutateprobe = (double)(2*child[j].size()) /(double)(populationSize * (populationSize + 1));
-				   int rand01 = Random01();
+					double Mutateprobe = (double)(2 * child[j].size()) / (double)(populationSize * (populationSize + 1));
+					int rand01 = Random01();
 
-				   if (rand01 < Mutateprobe)
+					if (rand01 < Mutateprobe)
 					{
-					   this->mutationMechanism(child[j], graph);
+						this->mutationMechanism(child[j], graph);
 					}
 				}
 				copy(child.begin(), child.end(), back_inserter(population));
@@ -68,8 +70,11 @@ vector<vector<long long>> GaBetweenVertex::Genetic(int Gm)
 	}
 	else
 	{
-		cout << "fail in find path";
+		status = true;
 	}
+
+	unsigned int end_time = clock();
+	time1 = (end_time - start_time) / 1000.0;
 	return population;
 }
 
@@ -145,8 +150,6 @@ vector<long long> GaBetweenVertex::RandomPath(int s, int t, Problem graph)
 	}
 	return newPopulation;
 }
-
-
 
 vector<vector<long long> > GaBetweenVertex::Unic(vector<vector<long long> >population1)
 {
@@ -332,7 +335,7 @@ vector<long long> GaBetweenVertex::mutationMechanism(vector<long long> p, Proble
 
 	for (int i = 2; i < p.size() - 2; i++)
 	{
-		if (graph.relatedVertex(p[i - 1], p[i + 1]) && graph.relatedVertex(p[i + 1],p[i]) &&
+		if (graph.relatedVertex(p[i - 1], p[i + 1]) && graph.relatedVertex(p[i + 1], p[i]) &&
 			graph.relatedVertex(p[i], p[i + 2]))
 		{
 			swap(p[i], p[i + 1]);
@@ -340,29 +343,29 @@ vector<long long> GaBetweenVertex::mutationMechanism(vector<long long> p, Proble
 	}
 
 	return p;
-} 
+}
 
 vector<long long> GaBetweenVertex::findVectorNoIncVertex(vector<long long>p, Problem graph)
 {
 	vector<long long> freeVertex;
-		for (size_t i = 0; i < graph.n; i++)
+	for (size_t i = 0; i < graph.n; i++)
+	{
+		vector<long long>::iterator it = find(p.begin(), p.end(), i);
+		if (it == p.end())
 		{
-			vector<long long>::iterator it = find(p.begin(), p.end(), i);
-			if (it == p.end())
-			{
-				freeVertex.push_back(i);
-			}
+			freeVertex.push_back(i);
 		}
-		return freeVertex;
+	}
+	return freeVertex;
 }
 
 int GaBetweenVertex::returnRandVertex(vector<long long> vec, bool ch)
 {
-	int tmp =0;
-	if (vec.size() > 2 && ch==false)
+	int tmp = 0;
+	if (vec.size() > 2 && ch == false)
 	{
-	   tmp = 1 + rand() % (vec.size() - 2);
-	}		
+		tmp = 1 + rand() % (vec.size() - 2);
+	}
 	else if (ch == true && vec.size() > 1)
 	{
 		tmp = 0 + rand() % (vec.size() - 1);

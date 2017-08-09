@@ -28,7 +28,6 @@ public:
 
 	int populationSize;
 	~GaInAllPath();
-	bool status;
 	GaInAllPath(GaInAllPath & obj) :GA(obj)
 	{
 		visited = obj.visited;
@@ -38,7 +37,7 @@ public:
 	vector<vector<long long> >selection(int, Problem&, vector<vector<long long> >&);
 	vector<vector<long long> > Unic(vector<vector<long long>>);
 	vector<vector<long long> > generateFirstGeneration(Problem&);
-	vector <vector <long long>>  Result(vector<vector<long long> >);	
+	vector <vector <long long>>  Result(vector<vector<long long> >);
 	vector< vector <long long> > start_nonInterseptingPath(Problem&, int);
 	vector <vector <long long> >  start_intersctingPaths(Problem&, int);
 	vector <vector <long long> > start_mutationMechanism(Problem&, int, int);

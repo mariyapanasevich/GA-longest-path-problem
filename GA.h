@@ -15,6 +15,8 @@ public:
 	double time1;
 	int populationSize;
 	vector<vector<long long>> population;
+	bool status;
+
 	virtual vector<vector<long long>> Unic(vector<vector<long long>>) = 0;
 	vector<vector<long long>> Sort1(vector<vector<long long>> population)
 	{

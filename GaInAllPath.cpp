@@ -10,8 +10,6 @@
 
 using namespace std;
 
-
-
 GaInAllPath::~GaInAllPath()
 {
 	population.clear();
@@ -211,7 +209,7 @@ vector<vector<long long> > GaInAllPath::selection(int i, Problem &G, vector<vect
 				  cout << "There aren't non-intersepting paths.\n";
 				  status = true;
 				  return tmp_population;
-				  
+
 				  break;
 			  }
 
@@ -342,7 +340,6 @@ vector<vector<long long> > GaInAllPath::selection(int i, Problem &G, vector<vect
 
 			  if (size2 == 0)
 			  {
-				  cout << "There aren't intersepting points and paths.\n";
 				  status = true;
 				  return tmp_population;
 				  break;
@@ -498,7 +495,7 @@ vector<vector<long long> >GaInAllPath::intersctingPaths(Problem&G, vector<vector
 			//4 child
 			copy(new_population[i + 1].begin(), new_population[i + 1].begin() + index[i / 2][1], back_inserter(new_population[new_population.size() - 1]));
 			copy(new_population[i].begin() + index[i / 2][0], new_population[i].end(), back_inserter(new_population[new_population.size() - 1]));
-			
+
 			for (size_t m = 4; m >0; m--)
 			{
 				visited.resize(visited.size() + 1);
@@ -610,7 +607,7 @@ vector<vector<long long> >GaInAllPath::intersctingPaths(Problem&G, vector<vector
 	return new_population;
 }
 
-vector <vector <long long> > GaInAllPath::start_intersctingPaths( Problem&D, int i)
+vector <vector <long long> > GaInAllPath::start_intersctingPaths(Problem&D, int i)
 {
 	vector<vector<long long> >sel;
 	vector<vector<long long> >join;
@@ -660,6 +657,7 @@ vector <vector <long long> > GaInAllPath::start_intersctingPaths( Problem&D, int
 
 vector<vector<long long>> GaInAllPath::mutationMechanism(vector<vector<long long> >&new_population, Problem &G)
 {
+
 	int v1;
 	int v2;
 	int m = new_population.size();
@@ -747,14 +745,14 @@ vector <vector <long long>>  GaInAllPath::Result(vector<vector<long long> > n_po
 			tmp.push_back(n_population[i]);
 		}
 	}
-	
+
 	return tmp;
 }
 
 void GaInAllPath::clear()
 {
 	tmp_visited.clear();
-    index.clear();
+	index.clear();
 	tmp_population.clear();
 	visited.clear();
 	new_population.clear();

@@ -3,7 +3,7 @@
 #include "Problem.h"
 #include "GA.h"
 
-class GaBetweenVertex:public GA
+class GaBetweenVertex :public GA
 {
 public:
 	Problem graph;
@@ -25,6 +25,6 @@ public:
 	vector<long long>  mutationMechanism(vector <long long>, Problem);
 	int rightmostindex(vector<long long>, int);
 	vector<long long> findVectorNoIncVertex(vector<long long>, Problem);
-	int returnRandVertex(vector<long long>, bool );
+	int returnRandVertex(vector<long long>, bool);
 
-}; 
+};

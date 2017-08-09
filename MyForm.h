@@ -1,13 +1,14 @@
 ﻿#pragma once
 #include "GA.h"
 #include <string>
-#include <msclr\marshal_cppstd.h>
 #include <vector>
+#include <msclr\marshal_cppstd.h>
 #include <fstream>
 #include <sstream>
 #include <stdio.h>
 #include <Windows.h>
-#include <SQLAPI.h>
+#include "GaInAllPath.h"
+#include "GaBetweenVertex.h"
 
 using namespace std;
 using namespace msclr::interop;
@@ -27,12 +28,22 @@ namespace form1 {
 	public ref class MyForm : public System::Windows::Forms::Form
 	{
 	public:
+
+		bool ch1 = false;
+		bool ch2 = false;
+
 		MyForm(void)
 		{
 			InitializeComponent();
 			textBox5->Enabled = false;
 			InitializeTrackBar();
 			InitializeTrackBar2();
+			radioButton1->Checked = false;
+			radioButton2->Checked = false;
+			radioButton3->Checked = false;
+			radioButton4->Checked = false;
+			enabledBetweenVertex();
+			enabledAllVertex();
 		}
 
 
@@ -82,6 +93,13 @@ namespace form1 {
 	private: System::Windows::Forms::Label^  label9;
 	private: System::Windows::Forms::Label^  label10;
 	private: System::Windows::Forms::Label^  label11;
+	private: System::Windows::Forms::GroupBox^  groupBox2;
+	private: System::Windows::Forms::TextBox^  textBox6;
+	private: System::Windows::Forms::Label^  label12;
+	private: System::Windows::Forms::TextBox^  textBox7;
+	private: System::Windows::Forms::Label^  label13;
+	private: System::Windows::Forms::CheckBox^  checkBox1;
+	private: System::Windows::Forms::CheckBox^  checkBox2;
 
 
 	private:
@@ -113,6 +131,7 @@ namespace form1 {
 			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->textBox3 = (gcnew System::Windows::Forms::TextBox());
 			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
+			this->checkBox1 = (gcnew System::Windows::Forms::CheckBox());
 			this->radioButton4 = (gcnew System::Windows::Forms::RadioButton());
 			this->radioButton3 = (gcnew System::Windows::Forms::RadioButton());
 			this->radioButton2 = (gcnew System::Windows::Forms::RadioButton());
@@ -131,11 +150,18 @@ namespace form1 {
 			this->label9 = (gcnew System::Windows::Forms::Label());
 			this->label10 = (gcnew System::Windows::Forms::Label());
 			this->label11 = (gcnew System::Windows::Forms::Label());
+			this->groupBox2 = (gcnew System::Windows::Forms::GroupBox());
+			this->textBox6 = (gcnew System::Windows::Forms::TextBox());
+			this->label12 = (gcnew System::Windows::Forms::Label());
+			this->textBox7 = (gcnew System::Windows::Forms::TextBox());
+			this->label13 = (gcnew System::Windows::Forms::Label());
+			this->checkBox2 = (gcnew System::Windows::Forms::CheckBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
 			this->menuStrip1->SuspendLayout();
 			this->groupBox1->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar2))->BeginInit();
+			this->groupBox2->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// label1
@@ -191,7 +217,7 @@ namespace form1 {
 			});
 			this->menuStrip1->Location = System::Drawing::Point(0, 0);
 			this->menuStrip1->Name = L"menuStrip1";
-			this->menuStrip1->Size = System::Drawing::Size(692, 24);
+			this->menuStrip1->Size = System::Drawing::Size(891, 24);
 			this->menuStrip1->TabIndex = 5;
 			this->menuStrip1->Text = L"menuStrip1";
 			this->menuStrip1->ItemClicked += gcnew System::Windows::Forms::ToolStripItemClickedEventHandler(this, &MyForm::menuStrip1_ItemClicked);
@@ -254,7 +280,7 @@ namespace form1 {
 			// label3
 			// 
 			this->label3->AutoSize = true;
-			this->label3->Location = System::Drawing::Point(204, 41);
+			this->label3->Location = System::Drawing::Point(242, 41);
 			this->label3->Name = L"label3";
 			this->label3->Size = System::Drawing::Size(107, 13);
 			this->label3->TabIndex = 6;
@@ -263,7 +289,7 @@ namespace form1 {
 			// 
 			// textBox3
 			// 
-			this->textBox3->Location = System::Drawing::Point(343, 38);
+			this->textBox3->Location = System::Drawing::Point(390, 38);
 			this->textBox3->Name = L"textBox3";
 			this->textBox3->Size = System::Drawing::Size(41, 20);
 			this->textBox3->TabIndex = 7;
@@ -271,17 +297,29 @@ namespace form1 {
 			// 
 			// groupBox1
 			// 
+			this->groupBox1->Controls->Add(this->checkBox1);
 			this->groupBox1->Controls->Add(this->radioButton4);
 			this->groupBox1->Controls->Add(this->radioButton3);
 			this->groupBox1->Controls->Add(this->radioButton2);
 			this->groupBox1->Controls->Add(this->radioButton1);
-			this->groupBox1->Location = System::Drawing::Point(286, 129);
+			this->groupBox1->Location = System::Drawing::Point(207, 169);
 			this->groupBox1->Name = L"groupBox1";
-			this->groupBox1->Size = System::Drawing::Size(303, 124);
+			this->groupBox1->Size = System::Drawing::Size(303, 123);
 			this->groupBox1->TabIndex = 8;
 			this->groupBox1->TabStop = false;
-			this->groupBox1->Text = L"Select type algorithm to slovle the problem:";
 			this->groupBox1->Enter += gcnew System::EventHandler(this, &MyForm::groupBox1_Enter);
+			// 
+			// checkBox1
+			// 
+			this->checkBox1->AutoSize = true;
+			this->checkBox1->Location = System::Drawing::Point(14, 0);
+			this->checkBox1->Name = L"checkBox1";
+			this->checkBox1->Size = System::Drawing::Size(255, 17);
+			this->checkBox1->TabIndex = 4;
+			this->checkBox1->Text = L"Select type algorithm to solve problem in all path:";
+			this->checkBox1->UseVisualStyleBackColor = true;
+			this->checkBox1->CheckedChanged += gcnew System::EventHandler(this, &MyForm::checkBox1_CheckedChanged);
+			this->checkBox1->Click += gcnew System::EventHandler(this, &MyForm::checkBox1_Click);
 			// 
 			// radioButton4
 			// 
@@ -342,9 +380,9 @@ namespace form1 {
 			// 
 			// button1
 			// 
-			this->button1->Location = System::Drawing::Point(588, 270);
+			this->button1->Location = System::Drawing::Point(805, 296);
 			this->button1->Name = L"button1";
-			this->button1->Size = System::Drawing::Size(75, 23);
+			this->button1->Size = System::Drawing::Size(74, 23);
 			this->button1->TabIndex = 11;
 			this->button1->Text = L"Start";
 			this->button1->UseVisualStyleBackColor = true;
@@ -353,7 +391,7 @@ namespace form1 {
 			// 
 			// textBox5
 			// 
-			this->textBox5->Location = System::Drawing::Point(326, 273);
+			this->textBox5->Location = System::Drawing::Point(390, 133);
 			this->textBox5->Name = L"textBox5";
 			this->textBox5->Size = System::Drawing::Size(41, 20);
 			this->textBox5->TabIndex = 13;
@@ -362,7 +400,7 @@ namespace form1 {
 			// label5
 			// 
 			this->label5->AutoSize = true;
-			this->label5->Location = System::Drawing::Point(220, 275);
+			this->label5->Location = System::Drawing::Point(242, 136);
 			this->label5->Name = L"label5";
 			this->label5->Size = System::Drawing::Size(100, 13);
 			this->label5->TabIndex = 12;
@@ -382,13 +420,13 @@ namespace form1 {
 			this->listBox1->FormattingEnabled = true;
 			this->listBox1->Location = System::Drawing::Point(205, 325);
 			this->listBox1->Name = L"listBox1";
-			this->listBox1->Size = System::Drawing::Size(458, 160);
+			this->listBox1->Size = System::Drawing::Size(674, 160);
 			this->listBox1->TabIndex = 15;
 			this->listBox1->SelectedIndexChanged += gcnew System::EventHandler(this, &MyForm::listBox1_SelectedIndexChanged_1);
 			// 
 			// trackBar1
 			// 
-			this->trackBar1->Location = System::Drawing::Point(395, 27);
+			this->trackBar1->Location = System::Drawing::Point(589, 28);
 			this->trackBar1->Name = L"trackBar1";
 			this->trackBar1->Size = System::Drawing::Size(268, 45);
 			this->trackBar1->TabIndex = 16;
@@ -398,7 +436,7 @@ namespace form1 {
 			// 
 			// textBox4
 			// 
-			this->textBox4->Location = System::Drawing::Point(343, 82);
+			this->textBox4->Location = System::Drawing::Point(390, 85);
 			this->textBox4->Name = L"textBox4";
 			this->textBox4->Size = System::Drawing::Size(41, 20);
 			this->textBox4->TabIndex = 18;
@@ -407,7 +445,7 @@ namespace form1 {
 			// label7
 			// 
 			this->label7->AutoSize = true;
-			this->label7->Location = System::Drawing::Point(204, 85);
+			this->label7->Location = System::Drawing::Point(242, 88);
 			this->label7->Name = L"label7";
 			this->label7->Size = System::Drawing::Size(137, 13);
 			this->label7->TabIndex = 17;
@@ -415,7 +453,7 @@ namespace form1 {
 			// 
 			// trackBar2
 			// 
-			this->trackBar2->Location = System::Drawing::Point(395, 78);
+			this->trackBar2->Location = System::Drawing::Point(589, 85);
 			this->trackBar2->Name = L"trackBar2";
 			this->trackBar2->Size = System::Drawing::Size(268, 45);
 			this->trackBar2->TabIndex = 19;
@@ -425,7 +463,7 @@ namespace form1 {
 			// label8
 			// 
 			this->label8->AutoSize = true;
-			this->label8->Location = System::Drawing::Point(402, 63);
+			this->label8->Location = System::Drawing::Point(596, 67);
 			this->label8->Name = L"label8";
 			this->label8->Size = System::Drawing::Size(13, 13);
 			this->label8->TabIndex = 20;
@@ -434,7 +472,7 @@ namespace form1 {
 			// label9
 			// 
 			this->label9->AutoSize = true;
-			this->label9->Location = System::Drawing::Point(638, 63);
+			this->label9->Location = System::Drawing::Point(832, 63);
 			this->label9->Name = L"label9";
 			this->label9->Size = System::Drawing::Size(25, 13);
 			this->label9->TabIndex = 21;
@@ -443,7 +481,7 @@ namespace form1 {
 			// label10
 			// 
 			this->label10->AutoSize = true;
-			this->label10->Location = System::Drawing::Point(402, 110);
+			this->label10->Location = System::Drawing::Point(596, 117);
 			this->label10->Name = L"label10";
 			this->label10->Size = System::Drawing::Size(13, 13);
 			this->label10->TabIndex = 22;
@@ -452,17 +490,77 @@ namespace form1 {
 			// label11
 			// 
 			this->label11->AutoSize = true;
-			this->label11->Location = System::Drawing::Point(638, 110);
+			this->label11->Location = System::Drawing::Point(832, 117);
 			this->label11->Name = L"label11";
 			this->label11->Size = System::Drawing::Size(25, 13);
 			this->label11->TabIndex = 23;
 			this->label11->Text = L"100";
 			// 
+			// groupBox2
+			// 
+			this->groupBox2->Controls->Add(this->textBox6);
+			this->groupBox2->Controls->Add(this->label12);
+			this->groupBox2->Controls->Add(this->textBox7);
+			this->groupBox2->Controls->Add(this->label13);
+			this->groupBox2->Location = System::Drawing::Point(536, 169);
+			this->groupBox2->Name = L"groupBox2";
+			this->groupBox2->Size = System::Drawing::Size(303, 123);
+			this->groupBox2->TabIndex = 24;
+			this->groupBox2->TabStop = false;
+			// 
+			// textBox6
+			// 
+			this->textBox6->Location = System::Drawing::Point(124, 62);
+			this->textBox6->Name = L"textBox6";
+			this->textBox6->Size = System::Drawing::Size(41, 20);
+			this->textBox6->TabIndex = 25;
+			this->textBox6->TextChanged += gcnew System::EventHandler(this, &MyForm::textBox6_TextChanged);
+			// 
+			// label12
+			// 
+			this->label12->AutoSize = true;
+			this->label12->Location = System::Drawing::Point(15, 65);
+			this->label12->Name = L"label12";
+			this->label12->Size = System::Drawing::Size(79, 13);
+			this->label12->TabIndex = 21;
+			this->label12->Text = L"Second vertex:";
+			// 
+			// textBox7
+			// 
+			this->textBox7->Location = System::Drawing::Point(124, 26);
+			this->textBox7->Name = L"textBox7";
+			this->textBox7->Size = System::Drawing::Size(41, 20);
+			this->textBox7->TabIndex = 20;
+			this->textBox7->TextChanged += gcnew System::EventHandler(this, &MyForm::textBox7_TextChanged);
+			// 
+			// label13
+			// 
+			this->label13->AutoSize = true;
+			this->label13->Location = System::Drawing::Point(33, 29);
+			this->label13->Name = L"label13";
+			this->label13->Size = System::Drawing::Size(61, 13);
+			this->label13->TabIndex = 19;
+			this->label13->Text = L"First vertex:";
+			// 
+			// checkBox2
+			// 
+			this->checkBox2->AutoSize = true;
+			this->checkBox2->Location = System::Drawing::Point(554, 168);
+			this->checkBox2->Name = L"checkBox2";
+			this->checkBox2->Size = System::Drawing::Size(192, 17);
+			this->checkBox2->TabIndex = 25;
+			this->checkBox2->Text = L"Solve problem between two vertex:";
+			this->checkBox2->UseVisualStyleBackColor = true;
+			this->checkBox2->CheckedChanged += gcnew System::EventHandler(this, &MyForm::checkBox2_CheckedChanged);
+			this->checkBox2->Click += gcnew System::EventHandler(this, &MyForm::checkBox2_Click);
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(692, 504);
+			this->ClientSize = System::Drawing::Size(891, 504);
+			this->Controls->Add(this->checkBox2);
+			this->Controls->Add(this->groupBox2);
 			this->Controls->Add(this->label11);
 			this->Controls->Add(this->label10);
 			this->Controls->Add(this->label9);
@@ -497,6 +595,8 @@ namespace form1 {
 			this->groupBox1->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar1))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar2))->EndInit();
+			this->groupBox2->ResumeLayout(false);
+			this->groupBox2->PerformLayout();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -589,14 +689,14 @@ namespace form1 {
 				 listBox1->Items->Clear();
 
 				 bool remark = false;
-				 pair<int,int> coord;
+				 pair<int, int> coord;
 
 				 for (size_t i = 0; i < dataGridView1->RowCount - 1; i++)
 				 {
 
 					 try
 					 {
-						dataGridView1->Rows[i]->Cells[0]->Value->ToString();
+						 dataGridView1->Rows[i]->Cells[0]->Value->ToString();
 					 }
 					 catch (...) {
 						 string str = "Cell [" + to_string(i) + "][0] is empty!";
@@ -617,10 +717,10 @@ namespace form1 {
 							 MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
 						 return;
 					 }
-					
+
 				 }
 
-				 if ((textBox1->Text != "") && (textBox2->Text != "") && (textBox3->Text != "") && (textBox4->Text != ""))
+				 if ((textBox1->Text != "") && (textBox2->Text != "") && (textBox3->Text != ""))
 				 {
 					 Problem D(Convert::ToInt32(textBox1->Text), Convert::ToInt32(textBox2->Text));
 					 for (size_t i = 0; i < dataGridView1->RowCount - 1; i++)
@@ -631,115 +731,203 @@ namespace form1 {
 					 int size = Convert::ToInt32(textBox3->Text);
 					 bool status = false;
 
-					 GA population1(size);
-					 population1.generateFirstGeneration(D);
-					 double percent = 0;
-					 percent = Convert::ToDouble(textBox4->Text);
 
-					 population1.percent = percent / 100;
-					 if (radioButton1->Checked)
+					 if (checkBox1->Checked == true && textBox4->Text != "" && (radioButton1->Checked == true
+						 || (radioButton2->Checked == true) || (radioButton3->Checked == true) || (radioButton4->Checked == true)))
 					 {
-						 res = population1.start_nonInterseptingPath(D, 1);
-						 status = true;
-					 }
-					 if (radioButton2->Checked)
-					 {
-						 res = population1.start_intersctingPaths(D, 2);
-						 status = true;
-					 }
 
-					 if (radioButton3->Checked && textBox5->Text != "")
-					 {
-						 
+						 GaInAllPath population1(size);
+						 population1.generateFirstGeneration(D);
+						 double percent = 0;
+						 percent = Convert::ToDouble(textBox4->Text);
+
+						 population1.percent = percent / 100;
+						 if (radioButton1->Checked)
+						 {
+							 res = population1.start_nonInterseptingPath(D, 1);
+							 status = true;
+						 }
+						 if (radioButton2->Checked)
+						 {
+							 res = population1.start_intersctingPaths(D, 2);
+							 status = true;
+						 }
+
+						 if (radioButton3->Checked && textBox5->Text != "")
+						 {
 							 int n = Convert::ToInt32(textBox5->Text);
 							 res = population1.start_mutationMechanism(D, 3, n);
 							 status = true;
 						 }
-					 else if (radioButton3->Checked)
+						 else if (radioButton3->Checked)
 						 {
 							 MessageBox::Show("Don't set the number of steps", "Error", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
 						 }
-					 
 
-					 if (radioButton4->Checked && textBox5->Text != "")
-					 {
-						 if (textBox5->Text != "")
+
+						 if (radioButton4->Checked && textBox5->Text != "")
 						 {
-							 int n = Convert::ToInt32(textBox5->Text);
-							 res = population1.start_bothPairsOfPaths(population1, D, 4, n);
-							 status = true;
+							 if (textBox5->Text != "")
+							 {
+								 int n = Convert::ToInt32(textBox5->Text);
+								 res = population1.start_bothPairsOfPaths(D, 4, n);
+								 status = true;
+							 }
+
 						 }
-						 
+						 else if (radioButton4->Checked)
+						 {
+							 MessageBox::Show("Don't set the number of steps", "Error", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
+						 }
+						 if (status == true)
+						 {
+							 string resPath = "";
+							 if (radioButton1->Checked == true && population1.status == true)
+							 {
+								 resPath = "There aren't intersepting points and paths.\n";
+							 }
+							 else  if (radioButton2->Checked == true && population1.status == true)
+							 {
+								 resPath = "There aren't non-intersepting points and paths.\n";
+							 }
+							 else  if (radioButton4->Checked == true && population1.status == true)
+							 {
+								 resPath = "There aren't non-intersepting or intersepting points and paths.\n";
+							 }
+
+
+							 String^ tmp = Convert::ToString(res[0].size() - 1);
+							 string size1 = msclr::interop::marshal_as<string>(tmp);
+							 resPath = "The length of longest path is " + size1 + ".\n";
+							 writeResPath(res, resPath);
+							 int a = this->listBox1->Items->Count;
+							 String^ time;
+							 string time_str = "\nTime:" + to_string(population1.time1) + " sec.";
+							 time = marshal_as<String^>(time_str);
+							 this->listBox1->Items->Insert(a, time);
+						 }
+
 					 }
-					 else if (radioButton4->Checked)
-						 {
-							 MessageBox::Show("Don't set the number of steps", "Error", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
-						 }
-					 if (status == true)
-					 {
 
+					 else if (checkBox2->Checked == true && textBox5->Text != "" &&
+						 textBox6->Text != "" && textBox7->Text != "")
+					 {
+						 string resPath = "";
+						 GaBetweenVertex object(size);
+						 object.startData(Convert::ToInt32(textBox7->Text), Convert::ToInt32(textBox6->Text), D);
+						 res = object.Genetic(Convert::ToInt32(textBox5->Text));
+						 res = object.Unic(res);
 						 String^ tmp = Convert::ToString(res[0].size() - 1);
 						 string size1 = msclr::interop::marshal_as<string>(tmp);
-						 string resPath = "The length of longest path is " + size1 + ".\n";
 
-						 String^ result;
-						 result = marshal_as<String^>(resPath);
-						 this->listBox1->Items->Insert(0, result);
 
-						 resPath = "";
-						 for (size_t i = 0; i < res.size(); i++)
+						 resPath = "The length of longest path between " + to_string(object.s) + " and " + to_string(object.t) + " vertices is " + size1 + ".";
+
+						 if (checkBox2->Checked == true && object.status == true)
 						 {
-
-							 for (size_t j = 0; j < res[i].size()-1; j++)
-							 {
-								 String^ tmp1 = Convert::ToString(res[i][j]+1);
-								 String^ tmp2 = Convert::ToString(res[i][j+1] + 1);
-								 string str = "("+msclr::interop::marshal_as<string>(tmp1)+"," + msclr::interop::marshal_as<string>(tmp2)+")";
-								 resPath = resPath + str + " ";
-							 }
-							 String^ result1;
-							 result1 = marshal_as<String^>(resPath);
-							 this->listBox1->Items->Insert(i + 1, result1);
-							 resPath = "";
+							 resPath = "\nFail in find path.\n";
 						 }
 
-						 int a=this->listBox1->Items->Count;
+						 String^ result;
+
+						 result = marshal_as<String^>(resPath);
+						 writeResPath(res, resPath);
 						 String^ time;
-						 string time_str = "\nTime:"+to_string(population1.time1) + " sec.";
+						 string time_str = "Time:" + to_string(object.time1) + " sec.";
 						 time = marshal_as<String^>(time_str);
-						 this->listBox1->Items->Insert(a, time);
+						 this->listBox1->Items->Add(time);
 					 }
-	 
+
+					 else if ((textBox4->Text == "") && checkBox1->Checked == true)
+					 {
+						 MessageBox::Show("Percent for crossover can't be empty!", "Error",
+							 MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
+					 }
+					 else if (checkBox1->Checked == true && (radioButton1->Checked == false
+						 || (radioButton2->Checked == false) || (radioButton3->Checked == false) || (radioButton4->Checked == false)))
+					 {
+						 MessageBox::Show("Don't select algorithm", "Error",
+							 MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
+					 }
+					 else if (checkBox2->Checked == true && textBox6->Text == "")
+					 {
+						 MessageBox::Show("Second vertex can't be empty", "Error",
+							 MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
+					 }
+					 else if (checkBox2->Checked == true && textBox7->Text == "")
+					 {
+						 MessageBox::Show("First vertex can't be empty", "Error",
+							 MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
+					 }
+
+					 else if (checkBox2->Checked == false && checkBox1->Checked == false)
+					 {
+						 MessageBox::Show("Don't type exercise", "Error",
+							 MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
+					 }
+					 else if ((textBox5->Text == "") && (radioButton3->Checked == true || radioButton4->Checked == true || checkBox2->Checked == true))
+					 {
+						 MessageBox::Show("Don't set number step", "Error",
+							 MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
+					 }
+
+
+
 				 }
-				 else
+				 else if (textBox1->Text == "")
 				 {
-					  if (textBox1->Text == "")
-					 {
-						 MessageBox::Show("Graph can't have zero edges!", "Error",
-							 MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
-					 }
-					 else if (textBox2->Text == "")
-					 {
-						 MessageBox::Show("Graph can't have zero edges!", "Error",
-							 MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
-					 }
-					 else if ((textBox3->Text == ""))
-					 {
-						 MessageBox::Show("Size population can't be equal zero!", "Error",
-							 MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
-					 }
-					 else if ((textBox4->Text == ""))
-					 {
-						 MessageBox::Show("Percent for crossover can't be equal zero!", "Error",
-							 MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
-					 }
-
+					 MessageBox::Show("Graph can't have zero edges!", "Error",
+						 MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
 				 }
-
-				 
-
+				 else if (textBox2->Text == "")
+				 {
+					 MessageBox::Show("Graph can't have zero edges!", "Error",
+						 MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
+				 }
+				 else if ((textBox3->Text == ""))
+				 {
+					 MessageBox::Show("Size population can't be empty!", "Error",
+						 MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
+				 }
 
 	}
+
+			 void writeResPath(vector < vector<long long> > res, string  resPath)
+			 {
+
+				 this->listBox1->Items->Add(marshal_as<String^>(resPath));
+				 resPath = "";
+
+				 for (size_t i = 1; i < res[0].size(); i++)
+				 {
+					 resPath = resPath + "(" + to_string(res[0][i - 1] + 1) + "," + to_string(res[0][i] + 1) + ") ";
+				 }
+
+				 this->listBox1->Items->Add(marshal_as<String^>(resPath));
+				 resPath = "";
+
+				 if (res.size() > 1)
+				 {
+
+					 for (int i = 1; i < res.size(); i++)
+					 {
+						 if (res[0].size() == res[i].size())
+						 {
+							 for (size_t j = 1; j < res[i].size(); j++)
+							 {
+								 resPath = resPath + "(" + to_string(res[i][j - 1] + 1) + "," + to_string(res[i][j] + 1) + ") ";
+							 }
+							 this->listBox1->Items->Add(marshal_as<String^>(resPath));
+							 resPath = "";
+
+						 }
+
+					 }
+				 }
+
+			 }
+
+
 	private: System::Void textBox2_TextChanged(System::Object^  sender, System::EventArgs^  e) {
 
 				 if (textBox2->Text != "")
@@ -758,24 +946,31 @@ namespace form1 {
 
 				 if (textBox3->Text != "")
 				 {
-				
+
 					 bool isNumber = false;
 					 String^ i1 = textBox3->Text;
 					 string unmanaged = msclr::interop::marshal_as<string>(i1);
 
 					 isNumber = textIsNotNumber(unmanaged);
 
-					 if (isNumber == false && (Convert::ToDouble(i1) >= 0 && Convert::ToDouble(i1) <= 500)) trackBar1->Value = Convert::ToDouble(i1);	
+					 if (isNumber == false && (Convert::ToDouble(i1) >= 0 && Convert::ToDouble(i1) <= 500)) trackBar1->Value = Convert::ToDouble(i1);
 					 else
 					 {
 						 trackBar1->Value = 500;
 						 textBox3->Text = i1;
 					 }
-					 
-						 if (textBox3->Text == "0") MessageBox::Show("Size population can't be equal zero!", "Error",
+
+					 if (textBox3->Text == "0" && signal == false)
+					 {
+						 MessageBox::Show("Size population can't be equal zero!", "Error",
 							 MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
-						 if (isNumber == true || textBox3->Text == "0") textBox3->Text = "";
-					 
+					 }
+					 else
+					 {
+						 signal = false;
+					 }
+					 if (isNumber == true || textBox3->Text == "0") textBox3->Text = "";
+
 				 }
 	}
 	private: System::Void listBox1_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
@@ -804,9 +999,9 @@ namespace form1 {
 					 dataGridView1->ColumnCount = 2;
 					 dataGridView1->Columns[0]->Width = 50;
 					 dataGridView1->Columns[1]->Width = 50;
-					 int ch = 0; 
-					 string s;  
-					 vector<string> v;  
+					 int ch = 0;
+					 string s;
+					 vector<string> v;
 
 					 ifstream in(path);     //îòêðûëè äëÿ ÷òåíèÿ  ôàéë
 					 while ((ch = in.get()) != EOF) {   //îáúÿñíåíèå íèæå
@@ -843,8 +1038,6 @@ namespace form1 {
 							 str2 = str2 + v[i].at(j);
 						 }
 
-
-
 						 dataGridView1->Rows->Add();
 						 dataGridView1->Rows[i]->Cells[0]->Value = marshal_as<String^>(str1);
 						 dataGridView1->Rows[i]->Cells[1]->Value = marshal_as<String^>(str2);
@@ -872,7 +1065,7 @@ namespace form1 {
 
 	}
 	private: System::Void saveToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
-				 
+
 				 SaveFileDialog saveFileDialog1;
 				 saveFileDialog1.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
 				 saveFileDialog1.Title = "Save in text file";
@@ -884,7 +1077,7 @@ namespace form1 {
 				 {
 					 string path = msclr::interop::marshal_as<string>(Convert::ToString(saveFileDialog1.FileName));
 					 ofstream outputFile;
-					
+
 					 if (listBox1->Items->Count > 0)
 					 {
 						 outputFile.open(path);
@@ -892,21 +1085,36 @@ namespace form1 {
 						 else if (radioButton2->Checked)  outputFile << "Genetic Algorithm using intersecting paths\n";
 						 else if (radioButton3->Checked) outputFile << "Genetic Algorithm using a mutation mechanism \n";
 						 else if (radioButton4->Checked) outputFile << "Genetic Algorithm using non - intersecting paths and intersecting paths\n";
+						 else if (checkBox2->Checked == true) outputFile << "Genetic Algorithm between two vertex\n";
 
 						 outputFile << "Number of vertices in the graph : " << msclr::interop::marshal_as<string>(Convert::ToString(textBox1->Text)) << endl;
 						 outputFile << "Number of edges in the graph : " << msclr::interop::marshal_as<string>(Convert::ToString(textBox2->Text)) << endl;
 
-						 outputFile << "Edges:"<<endl;
-						 for (size_t i = 0; i < dataGridView1->RowCount-1; i++)
+						 if (checkBox2->Checked == true)
+						 {
+							 outputFile << "First vertex: " << msclr::interop::marshal_as<string>(Convert::ToString(textBox7->Text)) << endl;
+							 outputFile << "Second vertex: " << msclr::interop::marshal_as<string>(Convert::ToString(textBox6->Text)) << endl;
+						 }
+
+
+
+						 outputFile << "Edges:" << endl;
+						 for (size_t i = 0; i < dataGridView1->RowCount - 1; i++)
 						 {
 							 outputFile << msclr::interop::marshal_as<string>(dataGridView1->Rows[i]->Cells[0]->Value->ToString()) << " " << msclr::interop::marshal_as<string>(dataGridView1->Rows[i]->Cells[1]->Value->ToString()) << endl;
 						 }
 
 						 outputFile << "Popultion size: " << msclr::interop::marshal_as<string>(Convert::ToString(textBox3->Text)) << endl;
-						 outputFile << "Percent for crossover: " << msclr::interop::marshal_as<string>(Convert::ToString(textBox4->Text)+" %") << endl;
 
-						 if (radioButton3->Checked || radioButton4->Checked) outputFile << "Number steps: " << msclr::interop::marshal_as<string>(Convert::ToString(textBox5->Text)) << endl;
-						 outputFile << "Result:"  <<endl;
+						 if (checkBox1->Checked == true)
+						 {
+							 outputFile << "Percent for crossover: " << msclr::interop::marshal_as<string>(Convert::ToString(textBox4->Text) + " %") << endl;
+						 }
+
+						 if (radioButton3->Checked || radioButton4->Checked || checkBox2->Checked == true) outputFile << "Number steps: " << msclr::interop::marshal_as<string>(Convert::ToString(textBox5->Text)) << endl;
+						 outputFile << "Result:" << endl;
+
+
 
 						 for (size_t i = 0; i < listBox1->Items->Count; i++)
 						 {
@@ -926,123 +1134,288 @@ namespace form1 {
 				 }
 
 	}
-private: System::Void canselToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
-			 Application::Exit();
-}
-private: System::Void newWindowToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
-			 MyForm^ frm = gcnew MyForm;
-			 frm->Show(this);
-}
+	private: System::Void canselToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
+				 Application::Exit();
+	}
+	private: System::Void newWindowToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
+				 MyForm^ frm = gcnew MyForm;
+				 frm->Show(this);
+	}
 
-		 private: bool signal = false;
-private: System::Void clearToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
-			 textBox1->Text = "";
-			 textBox2->Text = "";
-			 textBox3->Text = "";
-			 textBox4->Text = "";
-            
-			 radioButton1->Checked = false;
-			 radioButton2->Checked = false;
-			 radioButton3->Checked = false;
-			 radioButton4->Checked = false;
-			 dataGridView1->ColumnCount = 0;
-			 textBox5->Text = "";
-			 textBox5->Enabled = false;
-			 listBox1->Items->Clear();
+	private: bool signal = false;
+	private: System::Void clearToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
+				 textBox1->Text = "";
+				 textBox2->Text = "";
+				 textBox3->Text = "";
+				 textBox4->Text = "";
+				 textBox7->Text = "";
+				 textBox6->Text = "";
 
-			 signal = true;
-			 trackBar1->Value = trackBar1->Minimum;
-			 
-			 trackBar2->Value = trackBar2->Minimum;
-
-
-}
-private: System::Void textBox5_TextChanged(System::Object^  sender, System::EventArgs^  e) {
-
-			 if (radioButton3->Checked == true || radioButton4->Checked == true)
-			 {
-
-				 if (textBox5->Text != "")
-				 {
-					 bool isNumber = false;
-					 String^ i1 = textBox5->Text;
-					 string unmanaged = msclr::interop::marshal_as<string>(i1);
-					 isNumber = textIsNotNumber(unmanaged);
-					 if (textBox5->Text == "0") MessageBox::Show("Algorithm can't have zero steps", "Error",
-						 MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
-					 if (isNumber == true || textBox3->Text == "0") textBox5->Text = "";
-				 }
-			 }
-			 else
-			 {
+				 radioButton1->Checked = false;
+				 radioButton2->Checked = false;
+				 radioButton3->Checked = false;
+				 radioButton4->Checked = false;
+				 dataGridView1->ColumnCount = 0;
 				 textBox5->Text = "";
-			 }
-}
-private: System::Void menuStrip1_ItemClicked(System::Object^  sender, System::Windows::Forms::ToolStripItemClickedEventArgs^  e) {
-}
-private: System::Void trackBar1_Scroll(System::Object^  sender, System::EventArgs^  e) {
-}
+				 textBox5->Enabled = false;
+				 listBox1->Items->Clear();
+
+				 signal = true;
+				 trackBar1->Value = trackBar1->Minimum;
+
+
+				 trackBar2->Value = trackBar2->Minimum;
+				 checkBox1->Checked = false;
+				 checkBox2->Checked = false;
+				 enabledBetweenVertex();
+				 enabledAllVertex();
+
+	}
+	private: System::Void textBox5_TextChanged(System::Object^  sender, System::EventArgs^  e) {
+
+				 if (radioButton3->Checked == true || radioButton4->Checked == true || checkBox2->Checked == true)
+				 {
+
+					 if (textBox5->Text != "")
+					 {
+						 bool isNumber = false;
+						 String^ i1 = textBox5->Text;
+						 string unmanaged = msclr::interop::marshal_as<string>(i1);
+						 isNumber = textIsNotNumber(unmanaged);
+						 if (textBox5->Text == "0") MessageBox::Show("Algorithm can't have zero steps", "Error",
+							 MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
+						 if (isNumber == true || textBox5->Text == "0") textBox5->Text = "";
+					 }
+				 }
+				 else
+				 {
+					 textBox5->Text = "";
+				 }
+	}
+	private: System::Void menuStrip1_ItemClicked(System::Object^  sender, System::Windows::Forms::ToolStripItemClickedEventArgs^  e) {
+	}
+	private: System::Void trackBar1_Scroll(System::Object^  sender, System::EventArgs^  e) {
+	}
 	private: System::Void trackBar1_ValueChanged(System::Object^  sender, System::EventArgs^  e) {
 
-
+				 if (System::Math::Round(trackBar1->Value) != 0)
 					 textBox3->Text = (System::Math::Round(trackBar1->Value)).ToString();
 	}
 
-private: bool tmp1 = false;
-private: System::Void textBox4_TextChanged(System::Object^  sender, System::EventArgs^  e) {
-			 if (textBox4->Text != "" && tmp1 == false)
-			 {
-				 bool isNumber = false;
-				 String^ i1 = textBox4->Text;
-				 string unmanaged = msclr::interop::marshal_as<string>(i1);
-				 isNumber = textIsNotNumber(unmanaged);
-				 bool st = false;
-
-				 if (isNumber == false)
+	private: bool tmp1 = false;
+	private: System::Void textBox4_TextChanged(System::Object^  sender, System::EventArgs^  e) {
+				 if (textBox4->Text != "" && tmp1 == false)
 				 {
+					 bool isNumber = false;
+					 String^ i1 = textBox4->Text;
+					 string unmanaged = msclr::interop::marshal_as<string>(i1);
+					 isNumber = textIsNotNumber(unmanaged);
+					 bool st = false;
 
-					 if (textBox4->Text == "0")
+					 if (isNumber == false)
 					 {
-						 MessageBox::Show("Percent for crossover can't be equal zero!", "Error",
-							 MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
-					 }
 
-					 double tmp = Convert::ToDouble(i1);
-					 if (tmp <= 0 || tmp > 100)
+						 if (textBox4->Text == "0")
+						 {
+							 MessageBox::Show("Percent for crossover can't be equal zero!", "Error",
+								 MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
+						 }
+
+						 double tmp = Convert::ToDouble(i1);
+						 if (tmp <= 0 || tmp > 100)
+						 {
+							 tmp1 = true;
+							 trackBar2->Value = 0;
+							 st = true;
+							 textBox4->Text = "";
+							 MessageBox::Show("Percent for crossover must be between 1 and 100!", "Error",
+								 MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
+
+						 }
+					 }
+					 if (isNumber == true || textBox4->Text == "0" || st == true)
 					 {
 						 tmp1 = true;
 						 trackBar2->Value = 0;
-						 st = true;
 						 textBox4->Text = "";
-						 MessageBox::Show("Percent for crossover must be between 1 and 100!", "Error",
-							 MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
+					 }
+					 else trackBar2->Value = Convert::ToDouble(i1);
 
+				 }
+				 else tmp1 = false;
+
+	}
+	private: System::Void trackBar2_Scroll(System::Object^  sender, System::EventArgs^  e) {
+
+	}
+	private: System::Void trackBar2_ValueChanged(System::Object^  sender, System::EventArgs^  e) {
+
+				 if (System::Math::Round(trackBar2->Value) != 0 && tmp1 == false)
+				 {
+					 textBox4->Text = (System::Math::Round(trackBar2->Value)).ToString();
+				 }
+
+	}
+	private: System::Void button1_MouseClick(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
+	}
+			 void enabledAllVertex()
+			 {
+				 radioButton1->Checked = false;
+				 radioButton2->Checked = false;
+				 radioButton3->Checked = false;
+				 radioButton4->Checked = false;
+				 radioButton1->Enabled = false;
+				 radioButton2->Enabled = false;
+				 radioButton3->Enabled = false;
+				 radioButton4->Enabled = false;
+				 textBox4->Text = "";
+				 textBox4->Enabled = false;
+				 trackBar2->Enabled = false;
+			 }
+
+			 void enabledBetweenVertex()
+			 {
+				 textBox6->Text = "";
+				 textBox7->Text = "";
+				 textBox5->Text = "";
+				 textBox6->Enabled = false;
+				 textBox7->Enabled = false;
+			 }
+
+			 void unabledAllVertex()
+			 {
+				 textBox4->Enabled = true;
+				 trackBar2->Enabled = true;
+				 radioButton1->Enabled = true;
+				 radioButton2->Enabled = true;
+				 radioButton3->Enabled = true;
+				 radioButton4->Enabled = true;
+			 }
+
+			 void unabledBetweenVertex()
+			 {
+
+				 textBox6->Enabled = true;
+				 textBox7->Enabled = true;
+			 }
+
+
+	private: System::Void checkBox1_Click(System::Object^  sender, System::EventArgs^  e) {
+				 if (ch2 == false)
+				 {
+					 checkBox2->Checked = false;
+					 enabledBetweenVertex();
+					 unabledAllVertex();
+					 ch2 = true;
+					 ch1 = false;
+					 textBox5->Enabled = false;
+					 textBox4->Enabled = true;
+					 trackBar2->Enabled = true;
+				 }
+				 else
+				 {
+					 ch2 = false;
+					 enabledAllVertex();
+				 }
+
+	}
+	private: System::Void checkBox2_Click(System::Object^  sender, System::EventArgs^  e) {
+
+				 if (ch1 == false)
+				 {
+					 checkBox1->Checked = false;
+					 enabledAllVertex();
+					 unabledBetweenVertex();
+					 ch1 = true;
+					 ch2 = false;
+					 textBox5->Enabled = true;
+					 textBox4->Enabled = false;
+					 trackBar2->Enabled = false;
+				 }
+				 else
+				 {
+					 ch1 = false;
+					 enabledBetweenVertex();
+				 }
+	}
+	private: System::Void textBox7_TextChanged(System::Object^  sender, System::EventArgs^  e) {
+				 if (textBox7->Text != "")
+				 {
+					 bool isNumber = false;
+					 String^ i1 = textBox7->Text;
+					 string unmanaged = msclr::interop::marshal_as<string>(i1);
+					 if (textIsNotNumber(unmanaged))
+					 {
+						 textBox7->Text = "";
+					 }
+					 
+					 if (textBox7->Text == "0")
+					 {
+						 MessageBox::Show("First vertex can't be equal zero", "Error",
+							 MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
+						 textBox7->Text = "";
+					 }
+					 else if (textBox1->Text != "" && isNumber == false)
+					 {
+						 if (Convert::ToInt32(textBox1->Text) < Convert::ToInt32(textBox7->Text))
+						 {
+							 MessageBox::Show("Number vertex must't exceed quality of vertices", "Error",
+								 MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
+							 textBox7->Text = "";
+
+						 }
+					 }
+					 else if (textBox6->Text != "")
+					 {
+						 if (Convert::ToInt32(textBox6->Text) == Convert::ToInt32(textBox7->Text))
+						 {
+							 MessageBox::Show("First vertex can't be equal second vertex", "Error",
+								 MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
+							 textBox7->Text = "";
+						 }
 					 }
 				 }
-				 if (isNumber == true || textBox4->Text == "0" || st == true)
+
+	}
+	private: System::Void textBox6_TextChanged(System::Object^  sender, System::EventArgs^  e) {
+				 if (textBox6->Text != "")
 				 {
-					 tmp1 = true;
-					 trackBar2->Value = 0;
-					 textBox4->Text = "";
+					 bool isNumber = false;
+					 String^ i1 = textBox6->Text;
+					 string unmanaged = msclr::interop::marshal_as<string>(i1);
+					 if (textIsNotNumber(unmanaged))
+					 {
+						 textBox6->Text = "";
+					 }
+					 else if (textBox6->Text == "0")
+					 {
+						 MessageBox::Show("Second vertex can't be equal zero ", "Error",
+							 MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
+						 textBox6->Text = "";
+					 }
+					 else if (textBox1->Text != ""&& isNumber == false)
+					 {
+						 if (Convert::ToInt32(textBox1->Text) < Convert::ToInt32(textBox6->Text))
+						 {
+							 MessageBox::Show("Number vertex must't exceed quality of vertices", "Error",
+								 MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
+							 textBox6->Text = "";
+						 }
+					 }
+					 else if (textBox7->Text != "")
+					 {
+						 if (Convert::ToInt32(textBox6->Text) == Convert::ToInt32(textBox7->Text))
+						 {
+							 MessageBox::Show("Second vertex can't be equal first vertex", "Error",
+								 MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
+							 textBox6->Text = "";
+						 }
+					 }
 				 }
-			      else trackBar2->Value = Convert::ToDouble(i1);
-				 
-			 }
-			 else tmp1 = false;
-
-}
-private: System::Void trackBar2_Scroll(System::Object^  sender, System::EventArgs^  e) {
-
-}
-private: System::Void trackBar2_ValueChanged(System::Object^  sender, System::EventArgs^  e) {
-			 
-			 if (System::Math::Round(trackBar2->Value) != 0 && tmp1==false)
-			 {
-				 textBox4->Text = (System::Math::Round(trackBar2->Value)).ToString();
-			 }
-			
-}
-private: System::Void button1_MouseClick(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
-}
-};
+	}
+	private: System::Void checkBox1_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
+	}
+	private: System::Void checkBox2_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
+	}
+	};
 }
