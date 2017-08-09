@@ -10,12 +10,7 @@
 
 using namespace std;
 
-GaInAllPath::GaInAllPath(int PopulationCount1)
-{
-	population.resize(PopulationCount1);
-	visited.resize(PopulationCount1);
-	PopulationCount = PopulationCount1;
-}
+
 
 GaInAllPath::~GaInAllPath()
 {
@@ -99,7 +94,7 @@ vector<vector<long long> > GaInAllPath::generateFirstGeneration(Problem &G)
 	return population;
 }
 
-vector<vector<long long> > GaInAllPath::unic(vector<vector<long long> >population1)
+vector<vector<long long> > GaInAllPath::Unic(vector<vector<long long> >population1)
 {
 	int count = 0;
 	for (size_t j = 0; j < population1.size(); j++)
@@ -139,7 +134,7 @@ vector<vector<long long> > GaInAllPath::selection(int i, Problem &G, vector<vect
 	new_population.clear();
 	tmp_population.clear();
 	tmp_visited.clear();
-
+	status = false;
 	if (visited.empty())
 	{
 		visited.resize(population1.size());
@@ -163,7 +158,7 @@ vector<vector<long long> > GaInAllPath::selection(int i, Problem &G, vector<vect
 		}
 	}
 
-	unic(population1);
+	Unic(population1);
 	switch (i)
 	{
 	case 3:
@@ -196,7 +191,6 @@ vector<vector<long long> > GaInAllPath::selection(int i, Problem &G, vector<vect
 							  }
 						  }
 
-
 						  if (count == 0)
 						  {
 							  new_population.push_back(tmp_population[i]);
@@ -215,7 +209,9 @@ vector<vector<long long> > GaInAllPath::selection(int i, Problem &G, vector<vect
 			  if (size1 == tmp_population.size() && count_cross == 0)
 			  {
 				  cout << "There aren't non-intersepting paths.\n";
+				  status = true;
 				  return tmp_population;
+				  
 				  break;
 			  }
 
@@ -320,11 +316,7 @@ vector<vector<long long> > GaInAllPath::selection(int i, Problem &G, vector<vect
 											  }
 
 										  }
-
-
 									  }
-
-
 									  if (m == tmp_population[i].size() - 1 && n == tmp_population[k].size() - 1 && beg1 != 0 && beg1 != tmp_population[i].size() - 1 && end1 != 0 && end1 != tmp_population[i].size() - 1
 										  && beg2 != 0 && beg2 != tmp_population[k].size() - 1 && end2 != 0 && end2 != tmp_population[k].size() - 1)
 
@@ -338,8 +330,6 @@ vector<vector<long long> > GaInAllPath::selection(int i, Problem &G, vector<vect
 										  index[index.size() - 1].push_back(beg2);
 										  index[index.size() - 1].push_back(end1);
 										  index[index.size() - 1].push_back(end2);
-
-
 									  }
 
 								  }
@@ -348,15 +338,12 @@ vector<vector<long long> > GaInAllPath::selection(int i, Problem &G, vector<vect
 					  }
 				  }
 			  }
-
-
-
-
 			  size_t size2 = (new_population.size()) ? new_population.size() : 0;
 
 			  if (size2 == 0)
 			  {
 				  cout << "There aren't intersepting points and paths.\n";
+				  status = true;
 				  return tmp_population;
 				  break;
 
@@ -380,11 +367,7 @@ vector<vector<long long> > GaInAllPath::selection(int i, Problem &G, vector<vect
 				  }
 				  break;
 			  }
-
 	}
-
-
-
 	}
 	return new_population;
 }
@@ -474,7 +457,7 @@ vector < vector <long long > > GaInAllPath::start_nonInterseptingPath(Problem&D,
 	visited.clear();
 	copy(tmp_visited.begin(), tmp_visited.end(), back_inserter(visited));
 	tmp_visited.clear();
-	unic(tmp_population);
+	Unic(tmp_population);
 	res_population = Result(tmp_population);
 	return res_population;
 }
@@ -669,7 +652,7 @@ vector <vector <long long> > GaInAllPath::start_intersctingPaths( Problem&D, int
 
 	unsigned int end_time = clock();
 	time1 = (end_time - start_time) / 1000.0;
-	unic(tmp_population);
+	Unic(tmp_population);
 	res_population = Result(tmp_population);
 	return res_population;
 
@@ -723,10 +706,6 @@ vector<vector<long long>> GaInAllPath::mutationMechanism(vector<vector<long long
 	}
 	return new_population;
 }
-		
-
-	
-
 
 vector <vector <long long> > GaInAllPath::start_mutationMechanism(Problem&D, int i, int n)
 {
@@ -751,7 +730,7 @@ vector <vector <long long> > GaInAllPath::start_mutationMechanism(Problem&D, int
 	}
 	unsigned int end_time = clock();
 	time1 = (end_time - start_time) / 1000.0;
-	unic(tmp_population);
+	Unic(tmp_population);
 	res_population = Result(tmp_population);
 	return res_population;
 }
@@ -772,189 +751,64 @@ vector <vector <long long>>  GaInAllPath::Result(vector<vector<long long> > n_po
 	return tmp;
 }
 
-vector <vector <long long> > GaInAllPath::start_bothPairsOfPaths(GaInAllPath a, Problem&D, int i, int n)
+void GaInAllPath::clear()
+{
+	tmp_visited.clear();
+    index.clear();
+	tmp_population.clear();
+	visited.clear();
+	new_population.clear();
+	res_population.clear();
+	population.clear();
+	visited.clear();
+}
+
+vector <vector <long long> > GaInAllPath::start_bothPairsOfPaths(Problem&D, int i, int n)
 {
 	vector<vector<long long> >sel1;
 	vector<vector<long long> >disjoint1;
 	vector<vector<long long> >sel2;
 	vector<vector<long long> >disjoint2;
-	vector<vector<bool> >visited1;
-	vector<vector<bool> >visited2;
-	vector<vector<long long> >new_population1;
-	vector<vector<long long> >new_population2;
-	vector<vector<long long> >idx;
-	GaInAllPath b(a.PopulationCount);
-	b = a;
+
+	GaInAllPath met1(*this);
+	GaInAllPath met2(*this);
+
 	unsigned int search_time;
 	unsigned int start_time = clock();
 
-	size_t ct1 = 0;
-	sel1 = a.selection(1, D, a.population);
-	if (a.tmp_population.size() == sel1.size())
+	int ct = 0;
+
+	do
 	{
-		ct1++;
-	}
+		sel1 = met1.selection(1, D, met1.population);
+		sel2 = met2.selection(2, D, met2.population);
 
-	copy(a.visited.begin(), a.visited.end(), back_inserter(visited1));
-	copy(a.new_population.begin(), a.new_population.end(), back_inserter(new_population1));
+		this->clear();
 
-	size_t ct2 = 0;
-	sel2 = b.selection(2, D, b.population);
-	if (b.tmp_population.size() == sel2.size())
-	{
-		ct2++;
-	}
-
-	copy(b.visited.begin(), b.visited.end(), back_inserter(visited2));
-	copy(b.new_population.begin(), b.new_population.end(), back_inserter(new_population2));
-	copy(b.index.begin(), b.index.end(), back_inserter(idx));
-	vector<vector<long long> >allDis;
-
-	if (ct1 > 0 && ct2 > 0)
-	{
-		copy(new_population1.begin(), new_population1.end(), back_inserter(allDis));
-		copy(new_population2.begin(), new_population2.end(), back_inserter(allDis));
-
-	}
-	else
-	{
-
-		size_t j = 0;
-		while (j != n)
+		if (met1.status == false)
 		{
-			allDis.clear();
-			if (ct1 == 0)
-			{
-				a.new_population.clear();
-				copy(sel1.begin(), sel1.end(), back_inserter(a.new_population));
-				new_population1.clear();
-				a.visited.clear();
-				copy(visited1.begin(), visited1.end(), back_inserter(a.visited));
-				visited1.clear();
-				disjoint1 = a.nonInterseptingPath(D, sel1);
-				copy(a.visited.begin(), a.visited.end(), back_inserter(visited1));
-				a.visited.clear();
-				ct1 = 0;
-			}
-			if (ct2 == 0)
-			{
-				a.new_population.clear();
-				copy(sel2.begin(), sel2.end(), back_inserter(a.new_population));
-				a.visited.clear();
-				copy(visited2.begin(), visited2.end(), back_inserter(a.visited));
-				visited2.clear();
-				copy(idx.begin(), idx.end(), back_inserter(a.index));
-				idx.clear();
-				disjoint2 = a.intersctingPaths(D, sel2);
-				copy(a.visited.begin(), a.visited.end(), back_inserter(visited2));
-				a.visited.clear();
-				ct2 = 0;
-			}
-
-			a.new_population.clear();
-			copy(disjoint1.begin(), disjoint1.end(), back_inserter(a.new_population));
-			copy(disjoint2.begin(), disjoint2.end(), back_inserter(a.new_population));
-			a.visited.clear();
-			disjoint1.clear();
-			disjoint2.clear();
-			copy(visited1.begin(), visited1.end(), back_inserter(a.visited));
-			copy(visited2.begin(), visited2.end(), back_inserter(a.visited));
-
-			visited1.clear();
-			visited2.clear();
-			new_population1.clear();
-			new_population2.clear();
-
-			copy(a.new_population.begin(), a.new_population.end(), back_inserter(allDis));
-			sel1 = a.selection(1, D, allDis);
-			visited.clear();
-			if (a.new_population.empty())	ct1++;
-
-			if (ct1 == 0)
-			{
-				copy(a.visited.begin(), a.visited.end(), back_inserter(visited1));
-				a.visited.clear();
-				copy(a.new_population.begin(), a.new_population.end(), back_inserter(new_population1));
-				a.new_population.clear();
-			}
-
-			a.new_population.clear();
-			a.visited.clear();
-			copy(visited2.begin(), visited2.end(), back_inserter(a.visited));
-			sel2 = a.selection(2, D, allDis);
-
-			if (a.new_population.empty()) ct2++;
-			if (ct2 == 0)
-			{
-				visited2.clear();
-				copy(a.visited.begin(), a.visited.end(), back_inserter(visited2));
-				copy(a.new_population.begin(), a.new_population.end(), back_inserter(new_population2));
-				a.new_population.clear();
-				a.visited.clear();
-				copy(a.index.begin(), a.index.end(), back_inserter(idx));
-			}
-
-			a.new_population.clear();
-			a.visited.clear();
-
-			if (ct1 == 0 && ct2 == 0)
-			{
-
-				copy(new_population1.begin(), new_population1.end(), back_inserter(a.new_population));
-				new_population1.clear();
-				copy(new_population2.begin(), new_population2.end(), back_inserter(a.new_population));
-				new_population2.clear();
-				copy(visited1.begin(), visited1.end(), back_inserter(a.visited));
-				copy(visited2.begin(), visited2.end(), back_inserter(a.visited));
-			}
-			else if (ct1 == 0 && ct2 > 0)
-			{
-				copy(new_population1.begin(), new_population1.end(), back_inserter(a.new_population));
-				copy(visited1.begin(), visited1.end(), back_inserter(a.visited));
-
-			}
-			else if (ct1 > 0 && ct2 == 0)
-			{
-				copy(new_population2.begin(), new_population2.end(), back_inserter(a.new_population));
-				copy(visited2.begin(), visited2.end(), back_inserter(a.visited));
-			}
-			else if (ct1 != 0 && ct2 != 0)
-			{
-				copy(sel1.begin(), sel1.end(), back_inserter(allDis));
-				copy(sel2.begin(), sel2.end(), back_inserter(allDis));
-
-				break;
-			}
-
-			j++;
+			disjoint1 = met1.nonInterseptingPath(D, met1.new_population);
+			copy(disjoint1.begin(), disjoint1.end(), back_inserter(population));
+			copy(met1.visited.begin(), met1.visited.end(), back_inserter(visited));
 		}
-	}
+
+		if (met2.status == false)
+		{
+			disjoint2 = met2.intersctingPaths(D, met2.new_population);
+			copy(disjoint2.begin(), disjoint2.end(), back_inserter(population));
+			copy(met2.visited.begin(), met2.visited.end(), back_inserter(visited));
+		}
+
+		met1.clear();
+		met2.clear();
+		met1 = *this;
+		met2 = *this;
+		ct++;
+	} while (ct != n);
+
+	Sort1(population);
+	res_population = Unic(population);
 	unsigned int end_time = clock();
 	time1 = (end_time - start_time) / 1000.0;
-
-	visited.clear();
-
-	for (size_t m = allDis.size(); m >0; m--)
-	{
-		visited.resize(visited.size() + 1);
-		visited[allDis.size() - m].resize(D.n);
-		for (size_t k = 0; k < allDis[allDis.size() - m].size(); k++)
-		{
-			visited[allDis.size() - m][allDis[allDis.size() - m][k]] = true;
-		}
-	}
-
-	for (size_t i = 0; i < allDis.size(); i++)
-	for (size_t j = i + 1; j < allDis.size(); j++)
-	{
-		if (allDis[i].size() < allDis[j].size())
-		{
-			swap(allDis[i], allDis[j]);
-			swap(visited[i], visited[j]);
-		}
-	}
-
-	vector<vector<long long >> x = a.unic(allDis);
-	res_population = a.Result(x);
 	return res_population;
 }

@@ -52,8 +52,6 @@ namespace form1 {
 	private: System::Windows::Forms::Label^  label2;
 	private: System::Windows::Forms::DataGridView^  dataGridView1;
 	private: System::Windows::Forms::TextBox^  textBox1;
-
-
 	private: System::Windows::Forms::TextBox^  textBox2;
 	private: System::Windows::Forms::MenuStrip^  menuStrip1;
 	private: System::Windows::Forms::ToolStripMenuItem^  fileToolStripMenuItem;
@@ -193,7 +191,7 @@ namespace form1 {
 			});
 			this->menuStrip1->Location = System::Drawing::Point(0, 0);
 			this->menuStrip1->Name = L"menuStrip1";
-			this->menuStrip1->Size = System::Drawing::Size(891, 24);
+			this->menuStrip1->Size = System::Drawing::Size(692, 24);
 			this->menuStrip1->TabIndex = 5;
 			this->menuStrip1->Text = L"menuStrip1";
 			this->menuStrip1->ItemClicked += gcnew System::Windows::Forms::ToolStripItemClickedEventHandler(this, &MyForm::menuStrip1_ItemClicked);
@@ -256,7 +254,7 @@ namespace form1 {
 			// label3
 			// 
 			this->label3->AutoSize = true;
-			this->label3->Location = System::Drawing::Point(251, 41);
+			this->label3->Location = System::Drawing::Point(204, 41);
 			this->label3->Name = L"label3";
 			this->label3->Size = System::Drawing::Size(107, 13);
 			this->label3->TabIndex = 6;
@@ -265,7 +263,7 @@ namespace form1 {
 			// 
 			// textBox3
 			// 
-			this->textBox3->Location = System::Drawing::Point(390, 38);
+			this->textBox3->Location = System::Drawing::Point(343, 38);
 			this->textBox3->Name = L"textBox3";
 			this->textBox3->Size = System::Drawing::Size(41, 20);
 			this->textBox3->TabIndex = 7;
@@ -277,7 +275,7 @@ namespace form1 {
 			this->groupBox1->Controls->Add(this->radioButton3);
 			this->groupBox1->Controls->Add(this->radioButton2);
 			this->groupBox1->Controls->Add(this->radioButton1);
-			this->groupBox1->Location = System::Drawing::Point(241, 133);
+			this->groupBox1->Location = System::Drawing::Point(286, 129);
 			this->groupBox1->Name = L"groupBox1";
 			this->groupBox1->Size = System::Drawing::Size(303, 124);
 			this->groupBox1->TabIndex = 8;
@@ -344,9 +342,9 @@ namespace form1 {
 			// 
 			// button1
 			// 
-			this->button1->Location = System::Drawing::Point(805, 273);
+			this->button1->Location = System::Drawing::Point(588, 270);
 			this->button1->Name = L"button1";
-			this->button1->Size = System::Drawing::Size(74, 23);
+			this->button1->Size = System::Drawing::Size(75, 23);
 			this->button1->TabIndex = 11;
 			this->button1->Text = L"Start";
 			this->button1->UseVisualStyleBackColor = true;
@@ -355,7 +353,7 @@ namespace form1 {
 			// 
 			// textBox5
 			// 
-			this->textBox5->Location = System::Drawing::Point(390, 275);
+			this->textBox5->Location = System::Drawing::Point(326, 273);
 			this->textBox5->Name = L"textBox5";
 			this->textBox5->Size = System::Drawing::Size(41, 20);
 			this->textBox5->TabIndex = 13;
@@ -384,13 +382,13 @@ namespace form1 {
 			this->listBox1->FormattingEnabled = true;
 			this->listBox1->Location = System::Drawing::Point(205, 325);
 			this->listBox1->Name = L"listBox1";
-			this->listBox1->Size = System::Drawing::Size(674, 160);
+			this->listBox1->Size = System::Drawing::Size(458, 160);
 			this->listBox1->TabIndex = 15;
 			this->listBox1->SelectedIndexChanged += gcnew System::EventHandler(this, &MyForm::listBox1_SelectedIndexChanged_1);
 			// 
 			// trackBar1
 			// 
-			this->trackBar1->Location = System::Drawing::Point(589, 38);
+			this->trackBar1->Location = System::Drawing::Point(395, 27);
 			this->trackBar1->Name = L"trackBar1";
 			this->trackBar1->Size = System::Drawing::Size(268, 45);
 			this->trackBar1->TabIndex = 16;
@@ -400,7 +398,7 @@ namespace form1 {
 			// 
 			// textBox4
 			// 
-			this->textBox4->Location = System::Drawing::Point(390, 82);
+			this->textBox4->Location = System::Drawing::Point(343, 82);
 			this->textBox4->Name = L"textBox4";
 			this->textBox4->Size = System::Drawing::Size(41, 20);
 			this->textBox4->TabIndex = 18;
@@ -409,7 +407,7 @@ namespace form1 {
 			// label7
 			// 
 			this->label7->AutoSize = true;
-			this->label7->Location = System::Drawing::Point(251, 85);
+			this->label7->Location = System::Drawing::Point(204, 85);
 			this->label7->Name = L"label7";
 			this->label7->Size = System::Drawing::Size(137, 13);
 			this->label7->TabIndex = 17;
@@ -417,7 +415,7 @@ namespace form1 {
 			// 
 			// trackBar2
 			// 
-			this->trackBar2->Location = System::Drawing::Point(589, 99);
+			this->trackBar2->Location = System::Drawing::Point(395, 78);
 			this->trackBar2->Name = L"trackBar2";
 			this->trackBar2->Size = System::Drawing::Size(268, 45);
 			this->trackBar2->TabIndex = 19;
@@ -427,7 +425,7 @@ namespace form1 {
 			// label8
 			// 
 			this->label8->AutoSize = true;
-			this->label8->Location = System::Drawing::Point(596, 74);
+			this->label8->Location = System::Drawing::Point(402, 63);
 			this->label8->Name = L"label8";
 			this->label8->Size = System::Drawing::Size(13, 13);
 			this->label8->TabIndex = 20;
@@ -436,7 +434,7 @@ namespace form1 {
 			// label9
 			// 
 			this->label9->AutoSize = true;
-			this->label9->Location = System::Drawing::Point(832, 74);
+			this->label9->Location = System::Drawing::Point(638, 63);
 			this->label9->Name = L"label9";
 			this->label9->Size = System::Drawing::Size(25, 13);
 			this->label9->TabIndex = 21;
@@ -445,7 +443,7 @@ namespace form1 {
 			// label10
 			// 
 			this->label10->AutoSize = true;
-			this->label10->Location = System::Drawing::Point(596, 131);
+			this->label10->Location = System::Drawing::Point(402, 110);
 			this->label10->Name = L"label10";
 			this->label10->Size = System::Drawing::Size(13, 13);
 			this->label10->TabIndex = 22;
@@ -454,7 +452,7 @@ namespace form1 {
 			// label11
 			// 
 			this->label11->AutoSize = true;
-			this->label11->Location = System::Drawing::Point(832, 131);
+			this->label11->Location = System::Drawing::Point(638, 110);
 			this->label11->Name = L"label11";
 			this->label11->Size = System::Drawing::Size(25, 13);
 			this->label11->TabIndex = 23;
@@ -464,7 +462,7 @@ namespace form1 {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(891, 504);
+			this->ClientSize = System::Drawing::Size(692, 504);
 			this->Controls->Add(this->label11);
 			this->Controls->Add(this->label10);
 			this->Controls->Add(this->label9);
@@ -622,8 +620,7 @@ namespace form1 {
 					
 				 }
 
-				 if (((textBox1->Text != "") && (textBox2->Text != "") && (textBox3->Text != "") && (textBox4->Text != "") )&& (radioButton1->Checked == true
-					 || (radioButton2->Checked == true) || (radioButton3->Checked == true) || (radioButton4->Checked == true)))
+				 if ((textBox1->Text != "") && (textBox2->Text != "") && (textBox3->Text != "") && (textBox4->Text != ""))
 				 {
 					 Problem D(Convert::ToInt32(textBox1->Text), Convert::ToInt32(textBox2->Text));
 					 for (size_t i = 0; i < dataGridView1->RowCount - 1; i++)
@@ -693,17 +690,11 @@ namespace form1 {
 						 for (size_t i = 0; i < res.size(); i++)
 						 {
 
-							 for (size_t j = 0; j < res[i].size() - 1; j++)
+							 for (size_t j = 0; j < res[i].size()-1; j++)
 							 {
-								 String^ tmp1 = Convert::ToString(res[i][j] + 1);
-								 String^ tmp2 = Convert::ToString(res[i][j + 1] + 1);
-								 string str = "";
-
-								 int tmp12 = Convert::ToInt32(listBox1->Size.Width);
-								 int tmp22 = resPath.size();
-								
-									 str = "(" + msclr::interop::marshal_as<string>(tmp1)+"," + msclr::interop::marshal_as<string>(tmp2)+") ";
-							
+								 String^ tmp1 = Convert::ToString(res[i][j]+1);
+								 String^ tmp2 = Convert::ToString(res[i][j+1] + 1);
+								 string str = "("+msclr::interop::marshal_as<string>(tmp1)+"," + msclr::interop::marshal_as<string>(tmp2)+")";
 								 resPath = resPath + str + " ";
 							 }
 							 String^ result1;
@@ -740,12 +731,6 @@ namespace form1 {
 					 else if ((textBox4->Text == ""))
 					 {
 						 MessageBox::Show("Percent for crossover can't be equal zero!", "Error",
-							 MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
-					 }
-					 else if ((radioButton1->Checked == false
-						 || (radioButton2->Checked == false) || (radioButton3->Checked == false) || (radioButton4->Checked == false)))
-					 {
-						 MessageBox::Show("Don't select algorithm", "Error",
 							 MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
 					 }
 

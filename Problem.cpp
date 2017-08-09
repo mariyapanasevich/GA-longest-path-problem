@@ -1,7 +1,7 @@
 #include "Problem.h"
 #include <vector>
 #include <iostream>
-
+#include <iterator>
 
 Problem::Problem(int _n, int _m)
 	{
@@ -26,4 +26,23 @@ Problem::~Problem()
 	}
 
 
+Problem& Problem:: operator = (const Problem& g)
+{
+	this->n = g.n;
+	this->m = g.m;
+	copy(g.graph.begin(), g.graph.end(), std::back_inserter(this->graph));
+	return *this;
+}
 
+bool Problem::relatedVertex(int v, int n)
+{
+	std::vector<int>::iterator it = std::find(graph[v].begin(), graph[v].end(), n);
+	if (it != graph[v].end())
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
