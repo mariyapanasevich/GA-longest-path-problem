@@ -9,28 +9,11 @@
 
 using namespace std;
 
-
 void GaBetweenVertex::startData(int s, int t, Problem graph)
 {
 	this->s = s;
 	this->t = t;
 	this->graph = graph;
-}
-
-void GaBetweenVertex::print(vector<vector<long long>> tmp)
-{
-	cout << "New population:\n";
-
-	for (size_t i = 0; i < tmp.size(); i++)
-	{
-		cout << i << " path new population: ";
-
-		for (size_t j = 0; j < tmp[i].size(); j++)
-		{
-			cout << tmp[i][j] + 1 << " ";
-		}
-		cout << endl;
-	}
 }
 
 vector<vector<long long>> GaBetweenVertex::Genetic(int Gm)
