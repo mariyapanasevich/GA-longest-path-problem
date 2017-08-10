@@ -808,34 +808,45 @@ namespace form1 {
 						 }
 
 					 }
-
+					
 					 else if (checkBox2->Checked == true && textBox5->Text != "" &&
 						 textBox6->Text != "" && textBox7->Text != "")
 					 {
-						 string resPath = "";
-						 GaBetweenVertex object(size);
-						 object.startData(Convert::ToInt32(textBox7->Text), Convert::ToInt32(textBox6->Text), D);
-						 res = object.Genetic(Convert::ToInt32(textBox5->Text));
-						 res = object.Unic(res);
-						 String^ tmp = Convert::ToString(res[0].size() - 1);
-						 string size1 = msclr::interop::marshal_as<string>(tmp);
-
-
-						 resPath = "The length of longest path between " + to_string(object.s) + " and " + to_string(object.t) + " vertices is " + size1 + ".";
-
-						 if (checkBox2->Checked == true && object.status == true)
+						 if (Convert::ToInt32(textBox6->Text) == Convert::ToInt32(textBox7->Text))
 						 {
-							 resPath = "\nFail in find path.\n";
+							 MessageBox::Show("Vertices can't be equal!", "Error",
+								 MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
+							 textBox6->Text = "";
+							 textBox7->Text = "";
 						 }
+						 else
+						 {
 
-						 String^ result;
+							 string resPath = "";
+							 GaBetweenVertex object(size);
+							 object.startData(Convert::ToInt32(textBox7->Text), Convert::ToInt32(textBox6->Text), D);
+							 res = object.Genetic(Convert::ToInt32(textBox5->Text));
+							 res = object.Unic(res);
+							 String^ tmp = Convert::ToString(res[0].size() - 1);
+							 string size1 = msclr::interop::marshal_as<string>(tmp);
 
-						 result = marshal_as<String^>(resPath);
-						 writeResPath(res, resPath);
-						 String^ time;
-						 string time_str = "Time:" + to_string(object.time1) + " sec.";
-						 time = marshal_as<String^>(time_str);
-						 this->listBox1->Items->Add(time);
+
+							 resPath = "The length of longest path between " + to_string(object.s) + " and " + to_string(object.t) + " vertices is " + size1 + ".";
+
+							 if (checkBox2->Checked == true && object.status == true)
+							 {
+								 resPath = "\nFail in find path.\n";
+							 }
+
+							 String^ result;
+
+							 result = marshal_as<String^>(resPath);
+							 writeResPath(res, resPath);
+							 String^ time;
+							 string time_str = "Time:" + to_string(object.time1) + " sec.";
+							 time = marshal_as<String^>(time_str);
+							 this->listBox1->Items->Add(time);
+						 }
 					 }
 
 					 else if ((textBox4->Text == "") && checkBox1->Checked == true)
@@ -870,9 +881,6 @@ namespace form1 {
 						 MessageBox::Show("Don't set number step", "Error",
 							 MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
 					 }
-
-
-
 				 }
 				 else if (textBox1->Text == "")
 				 {
@@ -1003,15 +1011,15 @@ namespace form1 {
 					 string s;
 					 vector<string> v;
 
-					 ifstream in(path);     //îòêðûëè äëÿ ÷òåíèÿ  ôàéë
-					 while ((ch = in.get()) != EOF) {   //îáúÿñíåíèå íèæå
+					 ifstream in(path);     
+					 while ((ch = in.get()) != EOF) {   
 						 if (char(ch) != '\n') s = s + char(ch);
 						 else {
-							 v.push_back(s); //Åñëè òåêóùèé ñèìâîë ïåðåíîñ, òî çàïèñûâàåì ñòðîêó â âåêòîð
-							 s.clear(); //Î÷èùàåì ñòðîêó
+							 v.push_back(s); 
+							 s.clear(); 
 						 }
-					 }    v.push_back(s); //Äîïèñûâàåì ïîñëåäíþþ ñòðîêó â âåêòîð.
-					 in.close(); //Çàêðûâàåì ôàéë
+					 }    v.push_back(s); 
+					 in.close(); 
 
 					 for (size_t i = 0; i < v.size(); i++)
 					 {
@@ -1365,15 +1373,7 @@ namespace form1 {
 
 						 }
 					 }
-					 else if (textBox6->Text != "")
-					 {
-						 if (Convert::ToInt32(textBox6->Text) == Convert::ToInt32(textBox7->Text))
-						 {
-							 MessageBox::Show("First vertex can't be equal second vertex", "Error",
-								 MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
-							 textBox7->Text = "";
-						 }
-					 }
+					
 				 }
 
 	}
@@ -1398,15 +1398,6 @@ namespace form1 {
 						 if (Convert::ToInt32(textBox1->Text) < Convert::ToInt32(textBox6->Text))
 						 {
 							 MessageBox::Show("Number vertex must't exceed quality of vertices", "Error",
-								 MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
-							 textBox6->Text = "";
-						 }
-					 }
-					 else if (textBox7->Text != "")
-					 {
-						 if (Convert::ToInt32(textBox6->Text) == Convert::ToInt32(textBox7->Text))
-						 {
-							 MessageBox::Show("Second vertex can't be equal first vertex", "Error",
 								 MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
 							 textBox6->Text = "";
 						 }
