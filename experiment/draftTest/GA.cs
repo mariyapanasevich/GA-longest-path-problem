@@ -1,0 +1,26 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ExperimentForLPP.Classes
+{
+   abstract class GA
+    {
+       public int PopulationSize { get; set; }
+       public int typeTask { get; set; }
+       public List<List<int>> graph { get; set; }
+       public int numVertex { get; set; }
+       public int numEdge { get; set; }
+       public int typeAlgorithm { get; set; }
+       public int numberStep { get; set; }
+       public String ResultPath { get; set; }
+       public double time { get; set; }
+       public int maxLengthPath { get; set; }
+   
+        public GA() {}
+   
+   }
+}
+
