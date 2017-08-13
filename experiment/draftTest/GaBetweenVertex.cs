@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +8,13 @@ namespace ExperimentForLPP.Classes
 {
     class GaBetweenVertex
     {
+           public GaBetweenVertex():base()
+        {
+            this.typeTask = 2;
+        }
+
+        public int firstVertex { get; set; }
+        public int secondVertex { get; set; }
+
     }
 }
