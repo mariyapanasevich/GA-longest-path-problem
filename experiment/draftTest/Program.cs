@@ -20,7 +20,7 @@ namespace ExperimentForLPP
             dc.SetCapability("app", @"E:/BackUp/GA/Debug/form1.exe");
             var driver = new RemoteWebDriver(new Uri("http://localhost:9999"), dc);
             var app = new Application(driver);
-            app.longestPathinBetweenVertex();
+            app.longestPathinAllGraph();
            
 
             driver.Close();

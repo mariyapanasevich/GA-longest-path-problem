@@ -10,16 +10,15 @@ namespace ExperimentForLPP.Classes
     {
        public int PopulationSize { get; set; }
        public int typeTask { get; set; }
-       public List<List<int>> graph { get; set; }
+       public String graph { get; set; }
        public int numVertex { get; set; }
        public int numEdge { get; set; }
-       public int typeAlgorithm { get; set; }
        public int numberStep { get; set; }
        public String ResultPath { get; set; }
        public double time { get; set; }
        public int maxLengthPath { get; set; }
-   
-        public GA() {}
+       public int countExperement{get; set;}
+       public GA() {}
    
    }
 }

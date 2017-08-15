@@ -54,7 +54,55 @@ namespace ExperimentForLPP
 
         public void longestPathinAllGraph()
         {
-            //to do...
+            try
+            {
+            var data = ExcelDataAccess.GetTestData();
+            numVertex.SendKeys(data.numVertex.ToString());
+            numEdge.SendKeys(data.numEdge.ToString());
+            SizePop.SendKeys(data.PopulationSize.ToString());
+
+                
+                List<string> lstinternalcounter = data.graph.Select(c => c.ToString()).ToList();
+
+          
+
+
+            AllPath.Click();
+            data.setTypeAlgorithm(data.Name);
+
+           
+                if (data.typeAlgorithm == 1)
+                {
+                    nonintersectingpaths.Click();
+                }
+                else if (data.typeAlgorithm == 2)
+                {
+                    intersectingpaths.Click();
+                }
+                else if (data.typeAlgorithm == 3)
+                {
+                    mutate.Click();
+                }
+                else if (data.typeAlgorithm == 4)
+                {
+                    noninterAndinterpaths.Click();
+                }
+                else
+                {
+                    throw new Exception("Algorithm not found!");
+                }
+
+
+            persentCrossover.SendKeys(data.persentToCross.ToString());
+
+
+            start.Click();
+        }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error:" + ex.Message);
+            }
+
         }
 
         public void longestPathinBetweenVertex()
