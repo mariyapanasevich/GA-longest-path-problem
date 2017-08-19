@@ -22,8 +22,6 @@ namespace ExperimentForLPP
             var app = new Application(driver);
             app.longestPathinAllGraph();
            
-
-            driver.Close();
         }
 
     }

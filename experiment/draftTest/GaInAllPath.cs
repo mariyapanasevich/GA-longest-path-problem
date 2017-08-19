@@ -13,7 +13,7 @@ namespace ExperimentForLPP.Classes
             this.typeTask = 1;
         }
 
-        public void setTypeAlgorithm(string Name)
+        public void setTypeAlgorithm()
         {
             if (Name == "Genetic Algorithm using non - intersecting paths")
             {

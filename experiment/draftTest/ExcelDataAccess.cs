@@ -25,7 +25,7 @@ namespace ExperimentForLPP
             using (var connection = new OleDbConnection(TestDataFileConnection()))
             {
                 connection.Open();
-                var query = string.Format("select Name, graph, PopulationSize, numVertex,numEdge, numberStep, countExperement from [GaInAllPath$]");
+                var query = string.Format("select* from [GaInAllPath$]");
                 var value = connection.Query<GaInAllPath>(query).FirstOrDefault();
                 
 
