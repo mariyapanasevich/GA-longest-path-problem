@@ -9,7 +9,9 @@ using OpenQA.Selenium.Support.PageObjects;
 using System.Web.UI;
 using System.Text.RegularExpressions;
 using OpenQA.Selenium.Support.UI;
-
+using System.Threading;
+using ExperimentForLPP.Classes;
+ 
 namespace ExperimentForLPP
 {
     class Application
@@ -27,7 +29,7 @@ namespace ExperimentForLPP
         
         [FindsBy(How = How.Id, Using = "textBox4")]
         public IWebElement persentCrossover { get; set; }
-        
+
         [FindsBy(How = How.Id, Using = "textBox5")]
         public IWebElement numStep { get; set; }
         
@@ -36,9 +38,6 @@ namespace ExperimentForLPP
         
         [FindsBy(How = How.Id, Using = "textBox6")]
         public IWebElement secondVertex { get; set; }
-        
-        [FindsBy(How = How.Id, Using = "dataGridView1")]
-        public IWebElement dataGrid { get; set; }
         
         [FindsBy(How = How.Id, Using = "checkBox1")]
         public IWebElement AllPath { get; set; }
@@ -70,19 +69,21 @@ namespace ExperimentForLPP
             PageFactory.InitElements(driver, this);
         }
 
-        public void longestPathinAllGraph()
+        public void findlongestPath(int type, int time)
         {
-            var data = ExcelDataAccess.GetTestData();
-            numVertex.SendKeys(data.numVertex.ToString());
-            numEdge.SendKeys(data.numEdge.ToString());
-            SizePop.SendKeys(data.PopulationSize.ToString());
-            List<List<int>> dataTable = stringToList(data.graph, data.numEdge);
-            setValue(dataTable);
+           
 
             try
             {
-                if (data.typeTask == 1)
+                if (type == 1)
                 {
+                    GaInAllPath data = ExcelDataAccess.GetTestData<GaInAllPath>(type);
+                    numVertex.SendKeys(data.numVertex.ToString());
+                    numEdge.SendKeys(data.numEdge.ToString());
+                    SizePop.SendKeys(data.PopulationSize.ToString());
+                    List<List<int>> dataTable = stringToList(data.graph, data.numEdge);
+                    setValue(dataTable);
+                   
                     AllPath.Click();
                     data.setTypeAlgorithm();
 
@@ -113,11 +114,19 @@ namespace ExperimentForLPP
                         numStep.SendKeys(data.numberStep.ToString());
                     }
                 }
-                else if (data.typeTask == 2)
+                else if (type == 2)
                 {
-
+                    GaBetweenVertex data = ExcelDataAccess.GetTestData<GaBetweenVertex>(type);
+                    numVertex.SendKeys(data.numVertex.ToString());
+                    numEdge.SendKeys(data.numEdge.ToString());
+                    SizePop.SendKeys(data.PopulationSize.ToString());
+                    List<List<int>> dataTable = stringToList(data.graph, data.numEdge);
+                    setValue(dataTable);
+                    betweenVertex.Click();
+                    numStep.SendKeys(data.numberStep.ToString());
+                    firstVertex.SendKeys(data.firstVertex.ToString());
+                    secondVertex.SendKeys(data.secondVertex.ToString());
                 }
-
                 else
                 {
                     throw new Exception("Task didn't find!");
@@ -127,9 +136,10 @@ namespace ExperimentForLPP
             {
                 Console.WriteLine("Error:" + ex.Message);
             }
-            
-            Click(start,300);
-            driver.Close();
+
+            start.Click();
+            Thread.Sleep(time*1000);
+           
         }
 
         public  void Click(IWebElement element, int timeout)
@@ -169,7 +179,6 @@ namespace ExperimentForLPP
                 result.Add(tmp1[i].Split(new char[] { ' ' }).ToList().ConvertAll(s => Int32.Parse(s)));
             }
             return result;
-        }        
-
+        }
     }
 }

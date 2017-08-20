@@ -17,7 +17,6 @@ namespace ExperimentForLPP.Classes
        public String ResultPath { get; set; }
        public double time { get; set; }
        public int maxLengthPath { get; set; }
-       public int countExperement{get; set;}
        public GA() {}
    
    }

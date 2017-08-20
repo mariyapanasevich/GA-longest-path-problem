@@ -7,6 +7,7 @@ using System.Data.OleDb;
 using Dapper;
 using System.Configuration;
 using ExperimentForLPP.Classes;
+using System.Collections.Generic;
 
 namespace ExperimentForLPP
 {
@@ -20,22 +21,30 @@ namespace ExperimentForLPP
         }
 
 
-        public static GaInAllPath GetTestData()
+        public static T GetTestData<T>(int data)
         {
             using (var connection = new OleDbConnection(TestDataFileConnection()))
             {
                 connection.Open();
-                var query = string.Format("select* from [GaInAllPath$]");
-                var value = connection.Query<GaInAllPath>(query).FirstOrDefault();
-                
-
+             
+                string query = "";
+                if (data == 1)
+                {
+                  query = string.Format("select * from [GaInAllPath$]");
+                }
+                else if (data == 2)
+                {
+                    query = string.Format("select * from [GaBetweenVertex$]");
+                }
+             
+                var value = connection.Query<T>(query).FirstOrDefault();
                 connection.Close();
-                return value;
+                return (T) Convert.ChangeType(value, typeof(T));
             }
         }
 
 
-     
+
 
 
     }
