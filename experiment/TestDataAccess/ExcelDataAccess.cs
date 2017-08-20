@@ -20,7 +20,6 @@ namespace ExperimentForLPP
             return con;
         }
 
-
         public static T GetTestData<T>(int data)
         {
             using (var connection = new OleDbConnection(TestDataFileConnection()))
@@ -42,10 +41,5 @@ namespace ExperimentForLPP
                 return (T) Convert.ChangeType(value, typeof(T));
             }
         }
-
-
-
-
-
     }
 }
