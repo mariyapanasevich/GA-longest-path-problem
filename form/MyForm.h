@@ -30,6 +30,8 @@ namespace form1 {
 	public:
 
 		bool ch1 = false;
+	private: System::Windows::Forms::Button^  button2;
+	public:
 		bool ch2 = false;
 
 		MyForm(void)
@@ -156,6 +158,7 @@ namespace form1 {
 			this->textBox7 = (gcnew System::Windows::Forms::TextBox());
 			this->label13 = (gcnew System::Windows::Forms::Label());
 			this->checkBox2 = (gcnew System::Windows::Forms::CheckBox());
+			this->button2 = (gcnew System::Windows::Forms::Button());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
 			this->menuStrip1->SuspendLayout();
 			this->groupBox1->SuspendLayout();
@@ -316,7 +319,7 @@ namespace form1 {
 			this->checkBox1->Name = L"checkBox1";
 			this->checkBox1->Size = System::Drawing::Size(255, 17);
 			this->checkBox1->TabIndex = 4;
-			this->checkBox1->Text = L"Select type algorithm to solve problem in all path:";
+			this->checkBox1->Text = L"Select type algorithm to solve problem in graph:";
 			this->checkBox1->UseVisualStyleBackColor = true;
 			this->checkBox1->CheckedChanged += gcnew System::EventHandler(this, &MyForm::checkBox1_CheckedChanged);
 			this->checkBox1->Click += gcnew System::EventHandler(this, &MyForm::checkBox1_Click);
@@ -380,7 +383,7 @@ namespace form1 {
 			// 
 			// button1
 			// 
-			this->button1->Location = System::Drawing::Point(805, 296);
+			this->button1->Location = System::Drawing::Point(716, 296);
 			this->button1->Name = L"button1";
 			this->button1->Size = System::Drawing::Size(74, 23);
 			this->button1->TabIndex = 11;
@@ -554,11 +557,22 @@ namespace form1 {
 			this->checkBox2->CheckedChanged += gcnew System::EventHandler(this, &MyForm::checkBox2_CheckedChanged);
 			this->checkBox2->Click += gcnew System::EventHandler(this, &MyForm::checkBox2_Click);
 			// 
+			// button2
+			// 
+			this->button2->Location = System::Drawing::Point(796, 296);
+			this->button2->Name = L"button2";
+			this->button2->Size = System::Drawing::Size(74, 23);
+			this->button2->TabIndex = 26;
+			this->button2->Text = L"Clear";
+			this->button2->UseVisualStyleBackColor = true;
+			this->button2->Click += gcnew System::EventHandler(this, &MyForm::button2_Click);
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(891, 504);
+			this->Controls->Add(this->button2);
 			this->Controls->Add(this->checkBox2);
 			this->Controls->Add(this->groupBox2);
 			this->Controls->Add(this->label11);
@@ -1152,6 +1166,12 @@ namespace form1 {
 
 	private: bool signal = false;
 	private: System::Void clearToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
+				 Clear();
+	}
+	
+			 private: void Clear()
+
+			 {
 				 textBox1->Text = "";
 				 textBox2->Text = "";
 				 textBox3->Text = "";
@@ -1177,8 +1197,7 @@ namespace form1 {
 				 checkBox2->Checked = false;
 				 enabledBetweenVertex();
 				 enabledAllVertex();
-
-	}
+			 }
 	private: System::Void textBox5_TextChanged(System::Object^  sender, System::EventArgs^  e) {
 
 				 if (radioButton3->Checked == true || radioButton4->Checked == true || checkBox2->Checked == true)
@@ -1408,5 +1427,8 @@ namespace form1 {
 	}
 	private: System::Void checkBox2_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
 	}
-	};
+	private: System::Void button2_Click(System::Object^  sender, System::EventArgs^  e) {
+				 Clear();
+	}
+};
 }
