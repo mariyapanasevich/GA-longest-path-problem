@@ -14,9 +14,7 @@ namespace ExperimentForLPP.Classes
        public int numVertex { get; set; }
        public int numEdge { get; set; }
        public int numberStep { get; set; }
-       public double time { get; set; }
-       public GA() {}
-   
+       public GA() {}   
    }
 }
 
