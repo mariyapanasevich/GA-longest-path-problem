@@ -29,22 +29,6 @@ CREATE TABLE public."Task"
   CONSTRAINT "Task_pkey" PRIMARY KEY ("ID_task")
 );
 
-CREATE TABLE public.gabetweenvertex
-(
--- Унаследована from table "GA":  "ID_task" integer,
--- Унаследована from table "GA":  "Vertex" integer,
--- Унаследована from table "GA":  "Edge" integer,
--- Унаследована from table "GA":  "Time" real,
--- Унаследована from table "GA":  "SizeNewPopulation" integer,
--- Унаследована from table "GA":  "Path" character(255),
--- Унаследована from table "GA":  "LengthPath" integer,
--- Унаследована from table "GA":  "numberExperement" integer NOT NULL DEFAULT nextval('"GA_numberExperement_seq"'::regclass),
-  firstvertex integer,
-  secondvertex integer,
-  numstep integer,
-  CONSTRAINT "numExpwithstepBetweenVertex" PRIMARY KEY ("numberExperement")
-)
-INHERITS (public."GA")
 
 CREATE TABLE public.gainallgraph
 (
@@ -104,9 +88,12 @@ CREATE TABLE public.gabetweenvertex
   firstvertex integer,
   secondvertex integer,
   numstep integer,
-  CONSTRAINT "numExpwithstepBetweenVertex" PRIMARY KEY ("numberExperement")
+  CONSTRAINT "numExpwithstepBetweenVertex" PRIMARY KEY ("numberExperement"),
+  CONSTRAINT ga_between_vertex_fkey_id_task FOREIGN KEY ("ID_task")
+      REFERENCES public."Task" ("ID_task") MATCH SIMPLE
+      ON UPDATE CASCADE ON DELETE CASCADE
 )
-INHERITS (public."GA");
+INHERITS (public."GA")
 
 --insert data in tables --
 INSERT INTO public."Algorithm" ("ID_algorithm","Name") VALUES
