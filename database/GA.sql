@@ -43,7 +43,8 @@ CREATE TABLE public.gabetweenvertex
   secondvertex integer,
   numstep integer,
   CONSTRAINT "numExpwithstepBetweenVertex" PRIMARY KEY ("numberExperement")
-);
+)
+INHERITS (public."GA")
 
 CREATE TABLE public.gainallgraph
 (
@@ -58,9 +59,6 @@ CREATE TABLE public.gainallgraph
   id_algorithm integer,
   persent real,
   CONSTRAINT "numExp" PRIMARY KEY ("numberExperement"),
-  CONSTRAINT ga_between_vertex_fkey_id_task FOREIGN KEY ("ID_task")
-      REFERENCES public."Task" ("ID_task") MATCH SIMPLE
-      ON UPDATE CASCADE ON DELETE CASCADE,
   CONSTRAINT ga_in_all_fkey_id_algorithm FOREIGN KEY (id_algorithm)
       REFERENCES public."Algorithm" ("ID_algorithm") MATCH SIMPLE
       ON UPDATE CASCADE ON DELETE CASCADE,
