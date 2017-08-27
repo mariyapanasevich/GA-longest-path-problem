@@ -26,5 +26,14 @@ public:
 	int rightmostindex(vector<long long>, int);
 	vector<long long> findVectorNoIncVertex(vector<long long>, Problem);
 	int returnRandVertex(vector<long long>, bool);
+	int sizeStartPopulation;
+
+	GaBetweenVertex(GaBetweenVertex & obj) :GA(obj)
+	{
+		typeTask = obj.typeTask;
+		s = obj.s;
+		t = obj.t;
+		sizeStartPopulation = obj.sizeStartPopulation;
+	}
 
 };

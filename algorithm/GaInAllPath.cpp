@@ -426,6 +426,7 @@ vector<vector<long long> >GaInAllPath::nonInterseptingPath(Problem&G, vector<vec
 
 vector < vector <long long > > GaInAllPath::start_nonInterseptingPath(Problem&D, int i)
 {
+	type = 1;
 	vector<vector<long long> >sel;
 	vector<vector<long long> >disjoint;
 
@@ -609,6 +610,7 @@ vector<vector<long long> >GaInAllPath::intersctingPaths(Problem&G, vector<vector
 
 vector <vector <long long> > GaInAllPath::start_intersctingPaths(Problem&D, int i)
 {
+	type = 2;
 	vector<vector<long long> >sel;
 	vector<vector<long long> >join;
 	int size1 = 0;
@@ -707,6 +709,7 @@ vector<vector<long long>> GaInAllPath::mutationMechanism(vector<vector<long long
 
 vector <vector <long long> > GaInAllPath::start_mutationMechanism(Problem&D, int i, int n)
 {
+	type = 3;
 	vector<vector<long long> >sel;
 	vector<vector<long long> >mut;
 	unsigned int start_time = clock();
@@ -763,6 +766,7 @@ void GaInAllPath::clear()
 
 vector <vector <long long> > GaInAllPath::start_bothPairsOfPaths(Problem&D, int i, int n)
 {
+	type = 4;
 	vector<vector<long long> >sel1;
 	vector<vector<long long> >disjoint1;
 	vector<vector<long long> >sel2;

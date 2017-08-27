@@ -11,9 +11,11 @@ using namespace std;
 
 void GaBetweenVertex::startData(int s, int t, Problem graph)
 {
+	this->typeTask = 2;
 	this->s = s;
 	this->t = t;
 	this->graph = graph;
+	this->sizeStartPopulation = populationSize;
 }
 
 vector<vector<long long>> GaBetweenVertex::Genetic(int Gm)
@@ -75,8 +77,11 @@ vector<vector<long long>> GaBetweenVertex::Genetic(int Gm)
 
 	unsigned int end_time = clock();
 	time1 = (end_time - start_time) / 1000.0;
-	return population;
-}
+	res_population = Result(population);
+	res_population = Unic(res_population);
+
+	return res_population;
+ }
 
 vector<long long> GaBetweenVertex::RandomPath(int s, int t, Problem graph)
 {

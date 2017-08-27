@@ -17,21 +17,22 @@ private:
 public:
 	vector<vector<bool> > visited;
 	vector<vector<long long> > new_population;
-	vector<vector<long long> > res_population;
 	double percent;
-
+	int type;
 	GaInAllPath(int populationSize) :GA(populationSize)
 	{
+		typeTask = 1;
 		population.resize(populationSize);
 		visited.resize(populationSize);
 	}
 
-	int populationSize;
 	~GaInAllPath();
 	GaInAllPath(GaInAllPath & obj) :GA(obj)
 	{
+		typeTask = obj.typeTask;
 		visited = obj.visited;
 		percent = obj.percent;
+		type = obj.type;	
 	}
 	void clear();
 	vector<vector<long long> >selection(int, Problem&, vector<vector<long long> >&);
