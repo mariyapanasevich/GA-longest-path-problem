@@ -9,6 +9,7 @@
 #include <Windows.h>
 #include "GaInAllPath.h"
 #include "GaBetweenVertex.h"
+#include "DatabaseWriter.h"
 
 using namespace std;
 using namespace msclr::interop;
@@ -31,6 +32,7 @@ namespace form1 {
 
 		bool ch1 = false;
 	private: System::Windows::Forms::Button^  button2;
+	private: System::Windows::Forms::ToolStripMenuItem^  historyToolStripMenuItem;
 	public:
 		bool ch2 = false;
 
@@ -159,6 +161,7 @@ namespace form1 {
 			this->label13 = (gcnew System::Windows::Forms::Label());
 			this->checkBox2 = (gcnew System::Windows::Forms::CheckBox());
 			this->button2 = (gcnew System::Windows::Forms::Button());
+			this->historyToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
 			this->menuStrip1->SuspendLayout();
 			this->groupBox1->SuspendLayout();
@@ -214,9 +217,9 @@ namespace form1 {
 			// menuStrip1
 			// 
 			this->menuStrip1->BackColor = System::Drawing::SystemColors::ActiveCaption;
-			this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) {
+			this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(3) {
 				this->windowToolStripMenuItem,
-					this->fileToolStripMenuItem
+					this->fileToolStripMenuItem, this->historyToolStripMenuItem
 			});
 			this->menuStrip1->Location = System::Drawing::Point(0, 0);
 			this->menuStrip1->Name = L"menuStrip1";
@@ -238,21 +241,21 @@ namespace form1 {
 			// newWindowToolStripMenuItem
 			// 
 			this->newWindowToolStripMenuItem->Name = L"newWindowToolStripMenuItem";
-			this->newWindowToolStripMenuItem->Size = System::Drawing::Size(143, 22);
+			this->newWindowToolStripMenuItem->Size = System::Drawing::Size(152, 22);
 			this->newWindowToolStripMenuItem->Text = L"New window";
 			this->newWindowToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::newWindowToolStripMenuItem_Click);
 			// 
 			// clearToolStripMenuItem
 			// 
 			this->clearToolStripMenuItem->Name = L"clearToolStripMenuItem";
-			this->clearToolStripMenuItem->Size = System::Drawing::Size(143, 22);
+			this->clearToolStripMenuItem->Size = System::Drawing::Size(152, 22);
 			this->clearToolStripMenuItem->Text = L"Clear";
 			this->clearToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::clearToolStripMenuItem_Click);
 			// 
 			// canselToolStripMenuItem
 			// 
 			this->canselToolStripMenuItem->Name = L"canselToolStripMenuItem";
-			this->canselToolStripMenuItem->Size = System::Drawing::Size(143, 22);
+			this->canselToolStripMenuItem->Size = System::Drawing::Size(152, 22);
 			this->canselToolStripMenuItem->Text = L"Cansel";
 			this->canselToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::canselToolStripMenuItem_Click);
 			// 
@@ -269,14 +272,14 @@ namespace form1 {
 			// openToolStripMenuItem
 			// 
 			this->openToolStripMenuItem->Name = L"openToolStripMenuItem";
-			this->openToolStripMenuItem->Size = System::Drawing::Size(103, 22);
+			this->openToolStripMenuItem->Size = System::Drawing::Size(152, 22);
 			this->openToolStripMenuItem->Text = L"Open";
 			this->openToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::openToolStripMenuItem_Click);
 			// 
 			// saveToolStripMenuItem
 			// 
 			this->saveToolStripMenuItem->Name = L"saveToolStripMenuItem";
-			this->saveToolStripMenuItem->Size = System::Drawing::Size(103, 22);
+			this->saveToolStripMenuItem->Size = System::Drawing::Size(152, 22);
 			this->saveToolStripMenuItem->Text = L"Save";
 			this->saveToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::saveToolStripMenuItem_Click);
 			// 
@@ -317,7 +320,7 @@ namespace form1 {
 			this->checkBox1->AutoSize = true;
 			this->checkBox1->Location = System::Drawing::Point(14, 0);
 			this->checkBox1->Name = L"checkBox1";
-			this->checkBox1->Size = System::Drawing::Size(255, 17);
+			this->checkBox1->Size = System::Drawing::Size(248, 17);
 			this->checkBox1->TabIndex = 4;
 			this->checkBox1->Text = L"Select type algorithm to solve problem in graph:";
 			this->checkBox1->UseVisualStyleBackColor = true;
@@ -567,6 +570,12 @@ namespace form1 {
 			this->button2->UseVisualStyleBackColor = true;
 			this->button2->Click += gcnew System::EventHandler(this, &MyForm::button2_Click);
 			// 
+			// historyToolStripMenuItem
+			// 
+			this->historyToolStripMenuItem->Name = L"historyToolStripMenuItem";
+			this->historyToolStripMenuItem->Size = System::Drawing::Size(57, 20);
+			this->historyToolStripMenuItem->Text = L"History";
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -699,12 +708,12 @@ namespace form1 {
 				 if (radioButton1->Checked == true) textBox5->Enabled = false;
 	}
 	private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
-
+				 DatabaseWriter connect = DatabaseWriter();
+				  connect.ConnectDB();
+				 
 				 listBox1->Items->Clear();
 
 				 bool remark = false;
-				 pair<int, int> coord;
-
 				 for (size_t i = 0; i < dataGridView1->RowCount - 1; i++)
 				 {
 
@@ -754,7 +763,7 @@ namespace form1 {
 						 population1.generateFirstGeneration(D);
 						 double percent = 0;
 						 percent = Convert::ToDouble(textBox4->Text);
-
+						 int n = 0;
 						 population1.percent = percent / 100;
 						 if (radioButton1->Checked)
 						 {
@@ -765,11 +774,12 @@ namespace form1 {
 						 {
 							 res = population1.start_intersctingPaths(D, 2);
 							 status = true;
+
 						 }
 
 						 if (radioButton3->Checked && textBox5->Text != "")
 						 {
-							 int n = Convert::ToInt32(textBox5->Text);
+							 n = Convert::ToInt32(textBox5->Text);
 							 res = population1.start_mutationMechanism(D, 3, n);
 							 status = true;
 						 }
@@ -783,7 +793,7 @@ namespace form1 {
 						 {
 							 if (textBox5->Text != "")
 							 {
-								 int n = Convert::ToInt32(textBox5->Text);
+								 n = Convert::ToInt32(textBox5->Text);
 								 res = population1.start_bothPairsOfPaths(D, 4, n);
 								 status = true;
 							 }
@@ -809,7 +819,15 @@ namespace form1 {
 								 resPath = "There aren't non-intersepting or intersepting points and paths.\n";
 							 }
 
-
+							 if (radioButton1->Checked == true || radioButton2->Checked == true)
+							 {
+								 connect.insertData(population1.typeTask, population1, D, 0);
+							 }
+							 else
+							 {
+								 connect.insertData(population1.typeTask, population1, D, 1, n);
+							 }
+					
 							 String^ tmp = Convert::ToString(res[0].size() - 1);
 							 string size1 = msclr::interop::marshal_as<string>(tmp);
 							 resPath = "The length of longest path is " + size1 + ".\n";
@@ -840,7 +858,10 @@ namespace form1 {
 							 GaBetweenVertex object(size);
 							 object.startData(Convert::ToInt32(textBox7->Text), Convert::ToInt32(textBox6->Text), D);
 							 res = object.Genetic(Convert::ToInt32(textBox5->Text));
-							 res = object.Unic(res);
+							// res = object.Unic(res);
+
+							 connect.insertData(object.typeTask, object, D, 1, Convert::ToInt32(textBox5->Text));
+
 							 String^ tmp = Convert::ToString(res[0].size() - 1);
 							 string size1 = msclr::interop::marshal_as<string>(tmp);
 
@@ -911,6 +932,8 @@ namespace form1 {
 					 MessageBox::Show("Size population can't be empty!", "Error",
 						 MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
 				 }
+
+				 connect.CloseConn(connect.ConnectDB());
 
 	}
 
