@@ -15,8 +15,7 @@ CREATE TABLE public."GA"
   "SizeNewPopulation" integer,
   "Path" character(255),
   "LengthPath" integer,
-  "numberExperement" integer NOT NULL DEFAULT nextval('"GA_numberExperement_seq"'::regclass),
-  CONSTRAINT "numberExperement" PRIMARY KEY ("numberExperement"),
+  "numberExperement" serial PRIMARY KEY
   CONSTRAINT ga_fkey_id_task FOREIGN KEY ("ID_task")
       REFERENCES public."Task" ("ID_task") MATCH SIMPLE
       ON UPDATE CASCADE ON DELETE CASCADE
