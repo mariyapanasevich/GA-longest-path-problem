@@ -3,20 +3,17 @@
 #include <iostream>
 #include <iterator>
 
-Problem::Problem(int _n, int _m)
+Problem::Problem(int n, int m)
 {
-	n = _n;
-	m = _m;
-	for (int v = 0; v<n; v++)
-		graph.push_back(vector<int>());
-
+	this->n = n;
+	this->m = m;
+	graph.resize(n);
 }
 
 void Problem::graph_add(int x, int y)
 {
-	x--; y--;
-	graph[x].push_back(y);
-	graph[y].push_back(x);
+	graph[--x].push_back(y);
+	graph[--y].push_back(x);
 
 }
 

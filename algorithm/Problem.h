@@ -11,10 +11,10 @@ class Problem
 
 public:
 
-	vector<vector<int> > graph; //СЃРїРёСЃРѕРє СЃРјРµР¶РЅС‹С… РІРµСЂС€РёРЅ
+	vector<vector<int> > graph; //список смежных вершин
 	Problem(){};
-	int n; //РєРѕР»РёС‡РµСЃС‚РІРѕ РІРµСЂС€РёРЅ РІ РіСЂР°С„Рµ
-	int m; // РєРѕР»РёС‡РµСЃС‚РІРѕ СЂРµР±РµСЂ РІ РіСЂР°С„Рµ	
+	int n; //количество вершин в графе
+	int m; // количество ребер в графе	
 	Problem(int _n, int _m);
 	void graph_add(int x, int y);
 	~Problem();
