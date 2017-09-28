@@ -12,8 +12,8 @@ Problem::Problem(int n, int m)
 
 void Problem::graph_add(int x, int y)
 {
-	graph[--x].push_back(y);
-	graph[--y].push_back(x);
+	graph[--x].push_back(--y);
+	graph[y].push_back(x);
 
 }
 

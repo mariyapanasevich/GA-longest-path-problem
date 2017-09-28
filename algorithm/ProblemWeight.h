@@ -12,7 +12,7 @@ public:
 	ProblemWeight(int n, int m) : Problem(n, m)
 	{
 		weigth.resize(n);
+
 	}
-	
 	void graphAddWeight(int x, int y, int weigth);
 };
