@@ -6,9 +6,9 @@
 
 using namespace std;
 
-void ProblemWeight::graphAddWeight(int x, int y, int weigth)
+void ProblemWeight::graphAddWeight(int x, int y, int weight)
 {
 	this->graph_add(x, y);
-	this->weigth[--x].push_back(weigth);
-	this->weigth[--y].push_back(weigth);
+	this->weight[--x].push_back(weight);
+	this->weight[--y].push_back(weight);
 }
