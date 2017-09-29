@@ -8,10 +8,10 @@ using namespace std;
 class ProblemWeight :public Problem
 {
 public:
-	vector<vector<int>>weigth;
+	vector<vector<int>>weight;
 	ProblemWeight(int n, int m) : Problem(n, m)
 	{
-		weigth.resize(n);
+		weight.resize(n);
 
 	}
 	void graphAddWeight(int x, int y, int weigth);
