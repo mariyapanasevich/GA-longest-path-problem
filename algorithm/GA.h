@@ -35,7 +35,7 @@ public:
 
 		for (size_t i = 0; i < n_population.size(); i++)
 		{
-			if (n_population[0].size() == n_population[i].size() || i == 0 )
+			if (n_population[0].size() == n_population[i].size() || i == 0)
 			{
 				tmp.resize(tmp.size() + 1);
 				for (size_t j = 0; j < n_population[i].size(); j++)

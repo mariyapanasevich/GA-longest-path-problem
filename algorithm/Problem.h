@@ -11,7 +11,7 @@ class Problem
 
 public:
 
-	vector<vector<int> > graph; //список смежных вершин
+	vector<vector<long long> > graph; //список смежных вершин
 	Problem(){};
 	int n; //количество вершин в графе
 	int m; // количество ребер в графе	
@@ -20,6 +20,7 @@ public:
 	~Problem();
 	Problem& operator = (const Problem& g);
 	bool relatedVertex(int v, int end);
+	vector<long long>& operator[] (int pos);
 
 };
 

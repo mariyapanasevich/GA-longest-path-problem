@@ -2,6 +2,9 @@
 #include <vector>
 #include <iostream>
 #include <iterator>
+#include <algorithm>
+
+using namespace std;
 
 Problem::Problem(int n, int m)
 {
@@ -31,9 +34,15 @@ Problem& Problem:: operator = (const Problem& g)
 	return *this;
 }
 
+vector<long long> &Problem:: operator[] (int pos)
+{
+	return graph[pos];
+}
+
+
 bool Problem::relatedVertex(int v, int n)
 {
-	std::vector<int>::iterator it = std::find(graph[v].begin(), graph[v].end(), n);
+	std::vector<long long>::iterator it = find(graph[v].begin(), graph[v].end(), n);
 	if (it != graph[v].end())
 	{
 		return true;
