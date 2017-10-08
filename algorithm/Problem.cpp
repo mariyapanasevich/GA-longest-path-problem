@@ -34,7 +34,7 @@ Problem& Problem:: operator = (const Problem& g)
 	return *this;
 }
 
-vector<long long> &Problem:: operator[] (int pos)
+vector<long long> Problem:: operator[] (int pos)
 {
 	return graph[pos];
 }

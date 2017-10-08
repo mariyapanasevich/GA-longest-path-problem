@@ -183,25 +183,7 @@ vector<vector<long long> > GaBetweenVertex::Unic(vector<vector<long long> >popul
 	return tmp_population;
 }
 
-int GaBetweenVertex::RandomFromDist(int &populationSize)
-{
-	vector<long long>cuttoffs;
-	cuttoffs.push_back(2 * populationSize);
 
-	for (int i = 1; i < populationSize; i++)
-	{
-		cuttoffs.push_back(cuttoffs[i - 1] + (populationSize - i) * 2);
-	}
-
-	int r = rand() % (populationSize*populationSize + populationSize);
-	for (int i = 0; i < populationSize; i++)
-	{
-		if (r < cuttoffs[i])
-		{
-			return i;
-		}
-	}
-}
 
 vector<vector <long long>> GaBetweenVertex::Crossover(vector<long long> p1, vector<long long> p2)
 {
@@ -254,56 +236,9 @@ vector<vector <long long>> GaBetweenVertex::Crossover(vector<long long> p1, vect
 
 	copy(p1.begin() + i1, p1.end(), back_inserter(child[1]));
 
-	child[0] = RemoveCycles(child[0]);
-	child[1] = RemoveCycles(child[1]);
+	child[0] = RemoveCycles(child[0],2);
+	child[1] = RemoveCycles(child[1],2);
 	return child;
-}
-
-vector<long long> GaBetweenVertex::RemoveCycles(vector<long long> p)
-{
-	int rightpos = 0;
-	int pos;
-	for (size_t i = 1; i < p.size(); i++)
-	{
-		pos = rightmostindex(p, i);
-		if (pos > i && pos > rightpos)
-		{
-			rightpos = pos;
-		}
-	}
-
-	if (rightpos == 0)
-	{
-		return p;
-	}
-
-	int leftpos = 0;
-	for (size_t i = 1; i < p.size(); i++)
-	{
-		if (p[i] == p[rightpos])
-		{
-			leftpos = i;
-			break;
-		}
-	}
-
-	vector<long long> new_pop;
-	copy(p.begin(), p.begin() + leftpos, back_inserter(new_pop));
-	copy(p.begin() + rightpos, p.end(), back_inserter(new_pop));
-	return new_pop;
-}
-
-int GaBetweenVertex::rightmostindex(vector<long long> p, int elem)
-{
-	int idx = elem;
-	for (size_t i = elem + 1; i < p.size(); i++)
-	{
-		if (p[elem] == p[i])
-		{
-			idx = i;
-		}
-	}
-	return idx;
 }
 
 int GaBetweenVertex::Random01()

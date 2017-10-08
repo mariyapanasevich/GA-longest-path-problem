@@ -8,12 +8,13 @@ class GaInAllPath :public GA
 private:
 	vector<vector<long long> > index;
 	vector<long long> DRS(int, int, Problem &, vector<vector<long long> >&, int);
-	vector<vector<long long> > nonInterseptingPath(Problem&, vector<vector<long long> >&);
-	vector<vector<long long> > intersctingPaths(Problem&, vector<vector<long long> >&);
-	vector <vector <long long> >mutationMechanism(vector<vector<long long> >&new_population, Problem&D);
+	
 protected:
 	vector<vector<long long> > tmp_population;
 	vector<vector<bool> > tmp_visited;
+	vector<vector<long long> > nonInterseptingPath(Problem&, vector<vector<long long> >&);
+	vector<vector<long long> > intersctingPaths(Problem&, vector<vector<long long> >&);
+	vector <vector <long long> >mutationMechanism(vector<vector<long long> >&new_population, Problem&D);
 public:
 	vector<vector<bool> > visited;
 	vector<vector<long long> > new_population;
@@ -25,7 +26,10 @@ public:
 		population.resize(populationSize);
 		visited.resize(populationSize);
 	}
-
+	void setTypeTask()
+	{
+		this->typeTask = 1;
+	}
 	~GaInAllPath();
 	GaInAllPath(GaInAllPath & obj) :GA(obj)
 	{

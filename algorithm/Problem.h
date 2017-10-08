@@ -20,8 +20,7 @@ public:
 	~Problem();
 	Problem& operator = (const Problem& g);
 	bool relatedVertex(int v, int end);
-	vector<long long>& operator[] (int pos);
-
+	vector<long long> operator[] (int pos);
 };
 
 #endif

@@ -3,16 +3,25 @@
 #include "ProblemWeight.h"
 #include <vector>
 #include <iostream>
+#include "GaBetweenVertex.h"
 
-class GAWithWeight :public GaInAllPath
+class GAWithWeight :public  GaInAllPath
 {
 private:
-	vector <long long> setWeigthforStartPopulation(vector<vector<long long>>, ProblemWeight graph);
+	void setWeigth(vector<vector<long long>>&, vector<long long>&, vector<vector<long long>>&);
 	void SortForPopulationWeight();
-
+	ProblemWeight graph;
 public:
+	vector<vector<long long>> weigthPath;
 	vector <long long> weight;
-	GAWithWeight(int populationSize):GaInAllPath(populationSize){};
-	void generateFirstGenerationWeight(ProblemWeight graph);
+	vector<vector<long long>> newweigthPath;
+	vector <long long> new_weight;
+	void generateFirstGenerationWeight();
+	GAWithWeight(int populationSize) :GaInAllPath(populationSize){}
+	void SortForPopulationWeight(vector<vector<int>> population);
+	void procedure(ProblemWeight &graph, int step);
+	void mutation(vector<vector<long long>>&, vector<vector<long long>>&, vector<long long>&);
+	void crossover(vector<long long>,vector<long long>);
+
 };
 

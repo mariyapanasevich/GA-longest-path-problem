@@ -2,7 +2,7 @@
 #include <vector>
 #include "Problem.h"
 #include <algorithm>
-
+#include <iterator>
 class GA
 {
 public:
@@ -23,6 +23,13 @@ public:
 	bool status;
 	int typeTask;
 	virtual vector<vector<long long>> Unic(vector<vector<long long>>) = 0;
+	virtual void setTypeTask() = 0;
+	vector<long long> operator[] (int pos)
+	{
+		return population[pos];
+	}
+
+
 	vector<vector<long long>> Sort1(vector<vector<long long>> population)
 	{
 		sort(population.begin(), population.end(), sizecom);
@@ -47,7 +54,73 @@ public:
 
 		return tmp;
 	}
+	int RandomFromDist(int &populationSize)
+	{
+			vector<long long>cuttoffs;
+			cuttoffs.push_back(2 * populationSize);
 
+			for (int i = 1; i < populationSize; i++)
+			{
+				cuttoffs.push_back(cuttoffs[i - 1] + (populationSize - i) * 2);
+			}
+
+			int r = rand() % (populationSize*populationSize + populationSize);
+			for (int i = 0; i < populationSize; i++)
+			{
+				if (r < cuttoffs[i])
+				{
+					return i;
+				}
+			}
+	}
+
+	vector<long long> RemoveCycles(vector<long long> p, int type)
+	{
+		int rightpos = 0;
+		int pos;
+		int number = (type == 2) ? 1:0;
+		for (size_t i = number; i < p.size(); i++)
+		{
+			pos = rightmostindex(p, i);
+			if (pos > i && pos > rightpos)
+			{
+				rightpos = pos;
+			}
+		}
+
+		if (rightpos == 0)
+		{
+			return p;
+		}
+
+		int leftpos = 0;
+		for (size_t i = number; i < p.size(); i++)
+		{
+			if (p[i] == p[rightpos])
+			{
+				leftpos = i;
+				break;
+			}
+		}
+
+		vector<long long> new_pop;
+		copy(p.begin(), p.begin() + leftpos, back_inserter(new_pop));
+		copy(p.begin() + rightpos, p.end(), back_inserter(new_pop));
+		return new_pop;
+	}
+
+	int rightmostindex(vector<long long> p, int elem)
+	{
+		int idx = elem;
+		for (size_t i = elem + 1; i < p.size(); i++)
+		{
+			if (p[elem] == p[i])
+			{
+				idx = i;
+			}
+		}
+		return idx;
+	}
 private:
 	bool static sizecom(const vector<long long>&v1, const vector<long long>& v2)
 	{
