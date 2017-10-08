@@ -62,7 +62,7 @@ void GAWithWeight::procedure(ProblemWeight &graph, int step)
 	this->generateFirstGenerationWeight();
 
 	int count = 0;
-	while (count != step)
+	while (count != step || population[0].size() > population.end()[-1].size())
 	{
 		populationSize = population.size();
 		for (int i = populationSize; i < 2 * populationSize; i++)
@@ -71,23 +71,17 @@ void GAWithWeight::procedure(ProblemWeight &graph, int step)
 			int p2 = RandomFromDist(populationSize);
 			this->crossover(population[p1], population[p2]);
 			this->mutation(this->new_population, this->newweigthPath, this->new_weight);
-			
-			
-			
-			
-			
+
 			copy(this->new_population.begin(), this->new_population.end(), back_inserter(population));
 			copy(this->new_weight.begin(), this->new_weight.end(), back_inserter(weight));
 			copy(this->newweigthPath.begin(), this->newweigthPath.end(), back_inserter(weigthPath));
-
-
-
 			newweigthPath.clear();
 			new_population.clear();
 			new_weight.clear();
-			
 		}
  		this->SortForPopulationWeight();
+		
+		
 		count++;
 	}
 
@@ -266,4 +260,10 @@ void GAWithWeight::mutation(vector<vector<long long>>&population, vector<vector<
 			}
 		}
 	}
+}
+
+void GAWithWeight::mutationProb(int persent, vector<vector<long long>>&population, vector<vector<long long>>&weigthPath, vector<long long>&weight)
+{
+	//for ()
+
 }

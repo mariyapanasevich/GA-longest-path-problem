@@ -22,6 +22,7 @@ public:
 	void procedure(ProblemWeight &graph, int step);
 	void mutation(vector<vector<long long>>&, vector<vector<long long>>&, vector<long long>&);
 	void crossover(vector<long long>,vector<long long>);
+	void mutationProb(int Persent, vector<vector<long long>>&, vector<vector<long long>>&, vector<long long>&);
 
 };
 
