@@ -38,7 +38,7 @@ vector<vector<long long>> GaBetweenVertex::Genetic(int Gm)
 		int generation = 0;
 		int lashchange = 0;
 		vector<long long> p;
-
+		copy(population[0].begin(), population[0].end(), back_inserter(p));
 		while (generation < Gm && (generation - lashchange < Gm / 10) && population[0].size() > population.end()[-1].size())
 		{
 			for (int i = populationSize; i < 2 * populationSize; i++)
@@ -78,7 +78,7 @@ vector<vector<long long>> GaBetweenVertex::Genetic(int Gm)
 	unsigned int end_time = clock();
 	time1 = (end_time - start_time) / 1000.0;
 	res_population = Result(population);
-	res_population = Unic(res_population);
+	res_population = Unic(res_population,0);
 
 	return res_population;
  }
@@ -156,7 +156,7 @@ vector<long long> GaBetweenVertex::RandomPath(int s, int t, Problem graph)
 	return newPopulation;
 }
 
-vector<vector<long long> > GaBetweenVertex::Unic(vector<vector<long long> >population1)
+vector<vector<long long> > GaBetweenVertex::Unic(vector<vector<long long> >&population1, int val, ...)
 {
 	vector<vector<long long>>tmp_population;
 	int count = 0;
@@ -182,7 +182,6 @@ vector<vector<long long> > GaBetweenVertex::Unic(vector<vector<long long> >popul
 	}
 	return tmp_population;
 }
-
 
 
 vector<vector <long long>> GaBetweenVertex::Crossover(vector<long long> p1, vector<long long> p2)
@@ -314,3 +313,22 @@ int GaBetweenVertex::returnRandVertex(vector<long long> vec, bool ch)
 	return tmp;
 }
 
+int GaBetweenVertex::RandomFromDist(int &populationSize)
+{
+	vector<long long>cuttoffs;
+	cuttoffs.push_back(2 * populationSize);
+
+	for (int i = 1; i < populationSize; i++)
+	{
+		cuttoffs.push_back(cuttoffs[i - 1] + (populationSize - i) * 2);
+	}
+
+	int r = rand() % (populationSize*populationSize + populationSize);
+	for (int i = 0; i < populationSize; i++)
+	{
+		if (r < cuttoffs[i])
+		{
+			return i;
+		}
+	}
+}

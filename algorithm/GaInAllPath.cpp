@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <iostream>
 #include <cmath> 
+#include <stdarg.h>
 
 using namespace std;
 
@@ -92,15 +93,30 @@ vector<vector<long long> > GaInAllPath::generateFirstGeneration(Problem &G)
 	return population;
 }
 
-vector<vector<long long> > GaInAllPath::Unic(vector<vector<long long> >population1)
+vector<vector<long long> > GaInAllPath::Unic(vector<vector<long long> >&population1, int value, ...)
 {
+	vector<int>param_vec;
+	va_list L;
+	int val = value;
+	bool n = false;
+	va_start(L, value);
+	if (value >= 1)
+	{
+		while (value--)
+		{
+			n=va_arg(L, bool);
+		}
+
+		va_end(L);
+	}
+
 	int count = 0;
 	for (size_t j = 0; j < population1.size(); j++)
 	{
 		if (tmp_population.size() == 0)
 		{
 			tmp_population.push_back(population1[0]);
-			tmp_visited.push_back(visited[0]);
+			if(n == false) tmp_visited.push_back(visited[0]);
 		}
 		else
 		{
@@ -119,7 +135,7 @@ vector<vector<long long> > GaInAllPath::Unic(vector<vector<long long> >populatio
 		if (count == tmp_population.size())
 		{
 			tmp_population.push_back(population1[j]);
-			tmp_visited.push_back(visited[j]);
+			if (n == false) tmp_visited.push_back(visited[j]);
 		}
 
 	}
@@ -156,7 +172,7 @@ vector<vector<long long> > GaInAllPath::selection(int i, Problem &G, vector<vect
 		}
 	}
 
-	Unic(population1);
+	Unic(population1, 1 ,false);
 	switch (i)
 	{
 	case 3:
@@ -455,7 +471,7 @@ vector < vector <long long > > GaInAllPath::start_nonInterseptingPath(Problem&D,
 	visited.clear();
 	copy(tmp_visited.begin(), tmp_visited.end(), back_inserter(visited));
 	tmp_visited.clear();
-	Unic(tmp_population);
+	Unic(tmp_population, 1, false);
 	res_population = Result(tmp_population);
 	return res_population;
 }
@@ -651,7 +667,7 @@ vector <vector <long long> > GaInAllPath::start_intersctingPaths(Problem&D, int 
 
 	unsigned int end_time = clock();
 	time1 = (end_time - start_time) / 1000.0;
-	Unic(tmp_population);
+	Unic(tmp_population, 1, false);
 	res_population = Result(tmp_population);
 	return res_population;
 
@@ -731,7 +747,7 @@ vector <vector <long long> > GaInAllPath::start_mutationMechanism(Problem&D, int
 	}
 	unsigned int end_time = clock();
 	time1 = (end_time - start_time) / 1000.0;
-	Unic(tmp_population);
+	Unic(tmp_population, 1, false);
 	res_population = Result(tmp_population);
 	return res_population;
 }
@@ -809,7 +825,7 @@ vector <vector <long long> > GaInAllPath::start_bothPairsOfPaths(Problem&D, int 
 	} while (ct != n);
 
 	Sort1(population);
-	res_population = Unic(population);
+	res_population = Unic(population,true);
 	unsigned int end_time = clock();
 	time1 = (end_time - start_time) / 1000.0;
 	return res_population;

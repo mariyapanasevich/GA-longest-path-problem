@@ -22,7 +22,7 @@ public:
 	vector<vector<long long>> population;
 	bool status;
 	int typeTask;
-	virtual vector<vector<long long>> Unic(vector<vector<long long>>) = 0;
+	virtual vector<vector<long long>> Unic(vector<vector<long long>>&, int val, ...) = 0;
 	virtual void setTypeTask() = 0;
 	vector<long long> operator[] (int pos)
 	{
@@ -33,7 +33,7 @@ public:
 	vector<vector<long long>> Sort1(vector<vector<long long>> population)
 	{
 		sort(population.begin(), population.end(), sizecom);
-		population = Unic(population);
+		population = Unic(population, 0);
 		return population;
 	}
 	vector <vector <long long>> Result(vector<vector<long long> > n_population)
@@ -54,25 +54,7 @@ public:
 
 		return tmp;
 	}
-	int RandomFromDist(int &populationSize)
-	{
-			vector<long long>cuttoffs;
-			cuttoffs.push_back(2 * populationSize);
-
-			for (int i = 1; i < populationSize; i++)
-			{
-				cuttoffs.push_back(cuttoffs[i - 1] + (populationSize - i) * 2);
-			}
-
-			int r = rand() % (populationSize*populationSize + populationSize);
-			for (int i = 0; i < populationSize; i++)
-			{
-				if (r < cuttoffs[i])
-				{
-					return i;
-				}
-			}
-	}
+	
 
 	vector<long long> RemoveCycles(vector<long long> p, int type)
 	{
