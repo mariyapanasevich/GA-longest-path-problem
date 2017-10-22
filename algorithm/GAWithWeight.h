@@ -30,7 +30,9 @@ public:
 	vector<vector<long long>> resWeigthPath;
 
 	double probabilityMutation;
-	GAWithWeight(int populationSize) :GaInAllPath(populationSize){}
+	GAWithWeight(int populationSize) :GaInAllPath(populationSize){
+		typeTask = 3;
+	}
 	void procedure(ProblemWeight &graph, int step);
 };
 

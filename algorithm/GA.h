@@ -23,7 +23,6 @@ public:
 	bool status;
 	int typeTask;
 	virtual vector<vector<long long>> Unic(vector<vector<long long>>&, int val, ...) = 0;
-	virtual void setTypeTask() = 0;
 	vector<long long> operator[] (int pos)
 	{
 		return population[pos];

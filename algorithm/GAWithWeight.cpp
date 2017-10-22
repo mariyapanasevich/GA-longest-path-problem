@@ -363,11 +363,11 @@ int GAWithWeight::selection(vector<vector<long long>>& population, vector <long 
 
 void GAWithWeight::resultPaths(vector<vector<long long>>&population, vector<long long>&weight, vector<vector<long long>>& weigthPath)
 {
+	resWeigth.push_back(weight[0]);
 	for (int i = 0; i < weight.size(); i++)
 	{
 		if (i==0 || (weight[i]==weight[0] && i!=0))
 		{
-			resWeigth.push_back(weight[i]);
 			copy(weigthPath.begin(), weigthPath.end(), back_inserter(resWeigthPath));
 			copy(population.begin(), population.end(), back_inserter(res_population));
 		}

@@ -17,7 +17,6 @@ protected:
 	vector <vector <long long> >mutationMechanism(vector<vector<long long> >&new_population, Problem&D);
 	vector<vector<long long> >selection(int, Problem&, vector<vector<long long> >&);
 	vector<vector<long long> > Unic(vector<vector<long long>>&, int val, ...);
-	vector<vector<long long> > generateFirstGeneration(Problem&);
 public:
 	vector<vector<bool> > visited;
 	vector<vector<long long> > new_population;
@@ -29,10 +28,7 @@ public:
 		population.resize(populationSize);
 		visited.resize(populationSize);
 	}
-	void setTypeTask()
-	{
-		this->typeTask = 1;
-	}
+
 	~GaInAllPath();
 	GaInAllPath(GaInAllPath & obj) :GA(obj)
 	{
@@ -42,7 +38,7 @@ public:
 		type = obj.type;
 	}
 	void clear();
-	
+	vector<vector<long long> > generateFirstGeneration(Problem &G);
 	vector <vector <long long>>  Result(vector<vector<long long> >);
 	vector< vector <long long> > start_nonInterseptingPath(Problem&, int);
 	vector <vector <long long> >  start_intersctingPaths(Problem&, int);

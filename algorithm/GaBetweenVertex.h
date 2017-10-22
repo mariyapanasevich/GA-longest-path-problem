@@ -12,7 +12,7 @@ public:
 	vector<vector <long long>> child;
 	vector<long long> newChild;
 	void print(vector<vector<long long>>  tmp);
-	GaBetweenVertex(int populationSize) :GA(populationSize){}
+	GaBetweenVertex(int populationSize) :GA(populationSize){ typeTask = 2; }
 	void startData(int s, int t, Problem graph);
 	vector<vector<long long>> Genetic(int Gm);
 	vector<long long> RandomPath(int s, int t, Problem g);
