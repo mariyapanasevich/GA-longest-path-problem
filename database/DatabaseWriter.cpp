@@ -4,6 +4,8 @@
 #include <windows.h>
 #include <iostream>
 #include <msclr\marshal_cppstd.h>
+#include <cstring>
+
 
 
 using namespace System::Windows::Forms;

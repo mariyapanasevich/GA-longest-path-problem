@@ -34,7 +34,7 @@ public:
 				command = "INSERT INTO public.gainallgraph( id_task, vertex, edge, \"time\", sizenewpopulation, path, lengthpath, id_algorithm, persent, count) VALUES( 1 ," + to_string(G.n) + " , " +
 					to_string(G.m) + " , " + to_string(data.time1) + " , " + to_string(data.populationSize) + " , " +
 					result + " , " + to_string(data.res_population[0].size() - 1) + " , " + to_string(data.type) + " , " +
-					to_string(data.percent * 100) + to_string(data.res_population.size())+")";
+					to_string(data.percent * 100)+ " , " + to_string(data.res_population.size())+")";
 
 			}
 			else if (data.type == 3 || data.type == 4)
@@ -47,7 +47,7 @@ public:
 				command = "INSERT INTO public.gainallgraphwithstep( id_task, vertex, edge, \"time\", sizenewpopulation, path, lengthpath, id_algorithm, persent,  numstep, count) VALUES( 1 ," + to_string(G.n) + " , " +
 					to_string(G.m) + " , " + to_string(data.time1) + " , " + to_string(data.populationSize) + " , " +
 					result + " , " + to_string(data.res_population[0].size() - 1) + " , " + to_string(data.type) + " , " +
-					to_string(data.percent * 100) + to_string(data.res_population.size()) + ")";
+					to_string(data.percent * 100) + " , " + to_string(n) + " , " + to_string(data.res_population.size()) + ")";
 			}
 		}
 		else if (typeTask == 2)
