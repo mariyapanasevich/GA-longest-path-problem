@@ -64,16 +64,18 @@ void GAWithWeight::clear()
 
 void GAWithWeight::procedure(ProblemWeight &graph, int step)
 {
+	unsigned int start_time = clock();
+
 	this->graph = graph;
 	this->generateFirstGenerationWeight();
 	srand(time(0));
 	int count = 0;
 	int weigthpath = weight[0];
-	while (count != step || (weight[0] == weigthpath && count != 0))
+	while (count < step || (weight[0] != weigthpath && count != 0 ))
 	{
 		if (count != 0)
 		{
-			if (weight[0] < weigthpath)
+			if (weight[0] > weigthpath)
 			{
 				weigthpath = weight[0];
 			}
@@ -104,7 +106,10 @@ void GAWithWeight::procedure(ProblemWeight &graph, int step)
 		}
 		count++;
 	}
-	this->resultPaths(this->new_population, this->new_weight, this->newweigthPath);
+	unsigned int end_time = clock();
+	time1 = (end_time - start_time) / 1000.0;
+
+	this->resultPaths(this->population, this->weight, this->weigthPath);
 }
 
 void GAWithWeight::crossover(vector<long long>p1, vector<long long>p2)
@@ -363,13 +368,15 @@ int GAWithWeight::selection(vector<vector<long long>>& population, vector <long 
 
 void GAWithWeight::resultPaths(vector<vector<long long>>&population, vector<long long>&weight, vector<vector<long long>>& weigthPath)
 {
-	resWeigth.push_back(weight[0]);
+	resWeigth=weight[0];
 	for (int i = 0; i < weight.size(); i++)
 	{
 		if (i==0 || (weight[i]==weight[0] && i!=0))
 		{
-			copy(weigthPath.begin(), weigthPath.end(), back_inserter(resWeigthPath));
-			copy(population.begin(), population.end(), back_inserter(res_population));
+			resWeigthPath.push_back(weigthPath[i]);
+			res_population.push_back(population[i]);
+	//		copy(weigthPath[i].begin(), weigthPath[i].end(), back_inserter(resWeigthPath));
+		//	copy(population[i].begin(), population[i].end(), back_inserter(res_population));
 		}
 	}
 }

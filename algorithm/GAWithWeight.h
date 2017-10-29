@@ -26,7 +26,7 @@ private:
 	void clear();
 
 public:
-	vector<long long> resWeigth;
+    int resWeigth;
 	vector<vector<long long>> resWeigthPath;
 
 	double probabilityMutation;
