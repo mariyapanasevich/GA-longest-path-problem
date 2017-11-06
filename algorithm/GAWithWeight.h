@@ -1,11 +1,11 @@
 #pragma once
-#include "GaInAllPath.h"
+#include "GaInAllGraph.h"
 #include "ProblemWeight.h"
 #include <vector>
 #include <iostream>
 #include "GaBetweenVertex.h"
 
-class GAWithWeight :public GaInAllPath
+class GAWithWeight :public GaInAllGraph
 {
 private:
 	ProblemWeight graph;
@@ -30,7 +30,7 @@ public:
 	vector<vector<long long>> resWeigthPath;
 
 	double probabilityMutation;
-	GAWithWeight(int populationSize) :GaInAllPath(populationSize){
+	GAWithWeight(int populationSize) :GaInAllGraph(populationSize){
 		typeTask = 3;
 	}
 	void procedure(ProblemWeight &graph, int step);

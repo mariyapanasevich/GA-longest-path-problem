@@ -11,7 +11,6 @@ using namespace std;
 
 void GaBetweenVertex::startData(int s, int t, Problem graph)
 {
-	this->typeTask = 2;
 	this->s = s;
 	this->t = t;
 	this->graph = graph;
