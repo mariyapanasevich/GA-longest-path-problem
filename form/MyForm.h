@@ -7,7 +7,7 @@
 #include <sstream>
 #include <stdio.h>
 #include <Windows.h>
-#include "GaInAllPath.h"
+#include "GaInAllGraph.h"
 #include "GaBetweenVertex.h"
 #include "DatabaseWriter.h"
 #include "ProblemWeight.h"
@@ -736,6 +736,7 @@ namespace form1 {
 			this->radioButton3->TabStop = true;
 			this->radioButton3->Text = L"using a mutation mechanism";
 			this->radioButton3->UseVisualStyleBackColor = true;
+			this->radioButton3->CheckedChanged += gcnew System::EventHandler(this, &MyForm::radioButton3_CheckedChanged);
 			// 
 			// radioButton2
 			// 
@@ -759,6 +760,7 @@ namespace form1 {
 			this->radioButton1->TabStop = true;
 			this->radioButton1->Text = L"using non - intersecting paths";
 			this->radioButton1->UseVisualStyleBackColor = true;
+			this->radioButton1->CheckedChanged += gcnew System::EventHandler(this, &MyForm::radioButton1_CheckedChanged_1);
 			// 
 			// label14
 			// 
@@ -880,9 +882,9 @@ namespace form1 {
 			this->label7->AutoSize = true;
 			this->label7->Location = System::Drawing::Point(234, 63);
 			this->label7->Name = L"label7";
-			this->label7->Size = System::Drawing::Size(137, 13);
+			this->label7->Size = System::Drawing::Size(133, 13);
 			this->label7->TabIndex = 17;
-			this->label7->Text = L"Input percent for crossover:";
+			this->label7->Text = L"Input percent for selection:";
 			// 
 			// Genetic
 			// 
@@ -1078,7 +1080,7 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 						 || (radioButton2->Checked == true) || (radioButton3->Checked == true) || (radioButton4->Checked == true)))
 					 {
 
-						 GaInAllPath population1(size);
+						 GaInAllGraph population1(size);
 						 population1.generateFirstGeneration(D);
 						 double percent = 0;
 						 percent = Convert::ToDouble(textBox4->Text);
@@ -1091,7 +1093,7 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 						 }
 						 if (radioButton2->Checked)
 						 {
-							 res = population1.start_intersctingPaths(D, 2);
+							 res = population1.start_intersectingPath(D, 2);
 							 status = true;
 
 						 }
@@ -1140,17 +1142,19 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 
 							 if (radioButton1->Checked == true || radioButton2->Checked == true)
 							 {
+								 if (population1.status == false)
 								 connect.insertData(population1.typeTask, population1, D, 0);
 							 }
 							 else
 							 {
+								 if (population1.status == false)
 								 connect.insertData(population1.typeTask, population1, D, 1, n);
 							 }
 
 							 String^ tmp = Convert::ToString(res[0].size() - 1);
 							 string size1 = msclr::interop::marshal_as<string>(tmp);
 							 resPath = "The length of longest path is " + size1 + ".\n";
-							 writeResPath(listBox1,res, resPath);
+							 writeResPath(listBox1,res, resPath, true);
 							 int a = this->listBox1->Items->Count;
 							 String^ time;
 							 string time_str = "\nTime:" + to_string(population1.time1) + " sec.";
@@ -1195,7 +1199,7 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 							 String^ result;
 
 							 result = marshal_as<String^>(resPath);
-							 writeResPath(listBox1,res, resPath);
+							 writeResPath(listBox1,res, resPath, false);
 							 String^ time;
 							 string time_str = "Time:" + to_string(object.time1) + " sec.";
 							 time = marshal_as<String^>(time_str);
@@ -1256,16 +1260,17 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 
 	}
 
-	private: void writeResPath(ListBox^ listBox1, vector < vector<long long> > res, string  resPath)
+	private: void writeResPath(ListBox^ listBox1, vector < vector<long long> > res, string  resPath, bool val)
 			 {
 
 				 listBox1->Items->Add(marshal_as<String^>(resPath));
 				 resPath = "";
 
+				
 				 for (size_t i = 1; i < res[0].size(); i++)
 				 {
-					 resPath = resPath + "(" + to_string(res[0][i - 1] + 1) + "," + to_string(res[0][i] + 1) + ") ";
-					 
+					 resPath = resPath + "(" + ((val == true) ? to_string(res[0][i - 1] + 1) : to_string(res[0][i - 1]) ) + "," 
+						 + ((val == true) ? to_string(res[0][i] + 1) : to_string(res[0][i])) + ") ";
 				 }
 
 				listBox1->Items->Add(marshal_as<String^>(resPath));
@@ -1278,9 +1283,12 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 					 {
 						 if (res[0].size() == res[i].size())
 						 {
+						
 							 for (size_t j = 1; j < res[i].size(); j++)
 							 {
-								 resPath = resPath + "(" + to_string(res[i][j - 1] + 1) + "," + to_string(res[i][j] + 1) + ") ";
+							//	 string str2 = (val == true) ? to_string(res[i][j] + 1) : to_string(res[i][j]);
+								 resPath = resPath + "(" + ((val == true) ? to_string(res[i][j - 1] + 1) : to_string(res[i][j - 1])) + ","
+									 + ((val == true) ? to_string(res[i][j] + 1) : to_string(res[i][j])) + ") ";
 							 }
 							 listBox1->Items->Add(marshal_as<String^>(resPath));
 							 resPath = "";
@@ -1402,7 +1410,7 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 			  }
 			 private: void visible(DataGridView^ dataGridView, vector<string>table, int i)
 			 {
-				 dataGridView->Rows->Add();
+//				 dataGridView->Rows->Add();
 				 for (size_t j = 0; j < table.size(); j++)
 					 dataGridView->Rows[i]->Cells[j]->Value = marshal_as<String^>(table[j]);
 			 }
@@ -1452,6 +1460,13 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 						 }    v.push_back(s);
 						 in.close();
 
+
+						
+						 if (tabPage1->Visible == true) textBox2->Text = marshal_as<String^>(to_string(v.size()));
+						 if (tabPage2->Visible == true) textBox8->Text = marshal_as<String^>(to_string(v.size()));
+
+
+
 						 for (size_t i = 0; i < v.size(); i++)
 						 {
 
@@ -1485,7 +1500,7 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 							 {
 								 visible(dataGridView1, table, i);
 
-							     if (max < Convert::ToInt32(dataGridView1->Rows[i]->Cells[0]->Value)) max = Convert::ToInt32(dataGridView1->Rows[i]->Cells[0]->Value);
+							    if (max < Convert::ToInt32(dataGridView1->Rows[i]->Cells[0]->Value)) max = Convert::ToInt32(dataGridView1->Rows[i]->Cells[0]->Value);
 							     else if (max < Convert::ToInt32(dataGridView1->Rows[i]->Cells[1]->Value)) max = Convert::ToInt32(dataGridView1->Rows[i]->Cells[1]->Value);
 							 }
 							 else if (tabPage2->Visible == true)
@@ -1494,17 +1509,15 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 								 if (max < Convert::ToInt32(dataGridView2->Rows[i]->Cells[0]->Value)) max = Convert::ToInt32(dataGridView2->Rows[i]->Cells[0]->Value);
 								 else if (max < Convert::ToInt32(dataGridView2->Rows[i]->Cells[1]->Value)) max = Convert::ToInt32(dataGridView2->Rows[i]->Cells[1]->Value);
 							 }
-						 }
-
+						
+ }
 						 if (tabPage1->Visible == true)
 						 {
 							 textBox1->Text = marshal_as<String^>(to_string(max));
-							 textBox2->Text = marshal_as<String^>(to_string(dataGridView1->RowCount - 1));
 						 }
 						 else if (tabPage2->Visible == true)
 						 {
 							 textBox9->Text = marshal_as<String^>(to_string(max));
-							 textBox8->Text = marshal_as<String^>(to_string(dataGridView2->RowCount - 1));
 						 }
 					 }
 	}
@@ -2124,6 +2137,9 @@ private: System::Void textBox9_TextChanged(System::Object^  sender, System::Even
 			 }
 }
 private: System::Void listBox2_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
+}
+
+private: System::Void radioButton1_CheckedChanged_1(System::Object^  sender, System::EventArgs^  e) {
 }
 };
 }
