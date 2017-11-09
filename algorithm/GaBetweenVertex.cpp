@@ -139,11 +139,12 @@ vector<long long> GaBetweenVertex::RandomPath(int s, int t, Problem graph)
 			{
 				newPopulation.push_back(v);
 				int tmp;
-				do
-				{
-					tmp = 3 - rand() % 3;
-				} while (tmp >= newPopulation.size());
-				newPopulation.erase(newPopulation.end() - tmp, newPopulation.end());
+			//	do
+			//	{
+				//	tmp = 3 - rand() % 3;
+			//	} while (tmp >= newPopulation.size());
+				tmp = 3 - rand() % 3;
+				if (tmp < newPopulation.size()) newPopulation.erase(newPopulation.end() - tmp, newPopulation.end());
 			}
 		}
 

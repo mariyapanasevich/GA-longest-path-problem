@@ -6,7 +6,7 @@
 #include <random>
 #include <algorithm>
 #include <iostream>
-#include <cmath> 
+//#include <cmath> 
 #include <stdarg.h>
 
 using namespace std;
@@ -77,17 +77,15 @@ vector<long long>GaInAllGraph::DRS(int i, int i1, Problem &G, vector<vector<long
 
 vector<vector<long long> > GaInAllGraph::generateFirstGeneration(Problem &G)
 {
-	int r = G.n;
 	srand(time(0));
 	for (size_t i = 0; i < population.size(); i++)
 	{
-		visited[i].resize(r);
-		for (size_t j = 0; j < r; j++)
+		visited[i].resize(G.n);
+		for (size_t j = 0; j < G.n; j++)
 		{
 			visited[i][j] = false;
 		}
-		int l = rand() % (r - 1);
-		visited[i][l] = true;
+		int l = rand() % (G.n - 1);
 		population[i] = DRS(i, l, G, population, 1);
 	}
 	return population;
@@ -199,10 +197,8 @@ vector<vector<long long> > GaInAllGraph::selection(int i, Problem &G, vector<vec
 					  {
 						  for (int j = 0; j < G.n; j++)
 						  {
-							  if (tmp_visited[k][j] == tmp_visited[i][j] && (tmp_visited[k][j] == true))
-							  {
-								  count++;
-							  }
+							  if (tmp_visited[k][j] == tmp_visited[i][j] && (tmp_visited[k][j] == true)) count++;
+							  if (count > 0) break;
 						  }
 
 						  if (count == 0)
@@ -266,7 +262,7 @@ vector<vector<long long> > GaInAllGraph::selection(int i, Problem &G, vector<vec
 						  {
 							  if (tmp_visited[k][j] == tmp_visited[i][j] && tmp_visited[k][j] == true)
 							  {
-								  count++;
+								  count++; 
 							  }
 						  }
 
@@ -367,7 +363,7 @@ vector<vector<long long> > GaInAllGraph::selection(int i, Problem &G, vector<vec
 				  {
 
 					  int i = new_population.size()*percent;
-					  if (i % 2 == 0)
+					  if (i % 2 == 0 )
 					  {
 						  new_population.resize(i);
 						  visited.resize(i);
@@ -492,7 +488,7 @@ vector<vector<long long> >GaInAllGraph::intersectingPath(Problem&G, vector<vecto
 				count++;
 			}
 		}
-		if ((index[i / 2][0] == index[i / 2][2]) && (index[i / 2][1] == index[i / 2][3]) && count == 1)
+		if ((index[i / 2][0] == index[i / 2][2]) && (index[i / 2][1] == index[i / 2][3]) && count==1)
 		{
 			new_population.resize(new_population.size() + 4);
 			//1 child
@@ -527,7 +523,7 @@ vector<vector<long long> >GaInAllGraph::intersectingPath(Problem&G, vector<vecto
 		}
 		else if ((index[i / 2][0] != index[i / 2][2]) && (index[i / 2][1] != index[i / 2][3]))
 		{
-			if ((index[i / 2][0] < index[i / 2][2] && index[i / 2][1] < index[i / 2][3]) || (index[i / 2][0] > index[i / 2][2] && index[i / 2][1] > index[i / 2][3]))
+			if ((index[i / 2][0] < index[i / 2][2] && index[i / 2][1] < index[i / 2][3]) || (index[i / 2][0] < index[i / 2][2] && index[i / 2][1] > index[i / 2][3]))
 			{
 				new_population.resize(new_population.size() + 2);
 				copy(new_population[i].begin(), new_population[i].begin() + index[i / 2][2] + 1, back_inserter(new_population[new_population.size() - 2]));
@@ -620,7 +616,6 @@ vector<vector<long long> >GaInAllGraph::intersectingPath(Problem&G, vector<vecto
 			}
 		}
 	}
-
 
 	return new_population;
 }
