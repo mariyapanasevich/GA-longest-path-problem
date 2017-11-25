@@ -139,11 +139,11 @@ vector<long long> GaBetweenVertex::RandomPath(int s, int t, Problem graph)
 			{
 				newPopulation.push_back(v);
 				int tmp;
-			//	do
-			//	{
-				//	tmp = 3 - rand() % 3;
-			//	} while (tmp >= newPopulation.size());
-				tmp = 3 - rand() % 3;
+				do
+				{
+					tmp = 3 - rand() % 3;
+				} while (tmp >= newPopulation.size());
+				//tmp = 3 - rand() % 3;
 				if (tmp < newPopulation.size()) newPopulation.erase(newPopulation.end() - tmp, newPopulation.end());
 			}
 		}
@@ -249,39 +249,44 @@ vector<long long> GaBetweenVertex::mutationMechanism(vector<long long> p, Proble
 {
 	vector<long long> noInclude = findVectorNoIncVertex(p, G);
 	int idx = returnRandVertex(noInclude, false);
-	int x = noInclude[idx];
 
-	for (int i = 1; i < p.size() - 1; i++)
+	if (!noInclude.empty())
 	{
-		if (graph.relatedVertex(p[i], x) && graph.relatedVertex(x, p[i + 1]))
+		int x = noInclude[idx];
+
+		for (int i = 1; i < p.size() - 1; i++)
 		{
-			p.insert(p.begin() + i + 1, x);
-			noInclude.erase(noInclude.begin() + idx);
-			break;
+			if (graph.relatedVertex(p[i], x) && graph.relatedVertex(x, p[i + 1]))
+			{
+				p.insert(p.begin() + i + 1, x);
+				noInclude.erase(noInclude.begin() + idx);
+				break;
+			}
 		}
+
+		idx = returnRandVertex(p, false);
+
+		for (int i = 0; i < noInclude.size(); i++)
+		{
+			if (graph.relatedVertex(p[idx - 1], noInclude[i]) && graph.relatedVertex(noInclude[i], p[idx + 1]))
+			{
+				p[idx] = noInclude[i];
+				break;
+			}
+		}
+
+		for (int i = 2; i < p.size() - 2; i++)
+		{
+			if (graph.relatedVertex(p[i - 1], p[i + 1]) && graph.relatedVertex(p[i + 1], p[i]) &&
+				graph.relatedVertex(p[i], p[i + 2]))
+			{
+				swap(p[i], p[i + 1]);
+			}
+		}
+
+		return p;
 	}
 
-	idx = returnRandVertex(p, false);
-
-	for (int i = 0; i < noInclude.size(); i++)
-	{
-		if (graph.relatedVertex(p[idx - 1], noInclude[i]) && graph.relatedVertex(noInclude[i], p[idx + 1]))
-		{
-			p[idx] = noInclude[i];
-			break;
-		}
-	}
-
-	for (int i = 2; i < p.size() - 2; i++)
-	{
-		if (graph.relatedVertex(p[i - 1], p[i + 1]) && graph.relatedVertex(p[i + 1], p[i]) &&
-			graph.relatedVertex(p[i], p[i + 2]))
-		{
-			swap(p[i], p[i + 1]);
-		}
-	}
-
-	return p;
 }
 
 vector<long long> GaBetweenVertex::findVectorNoIncVertex(vector<long long>p, Problem graph)
@@ -300,7 +305,7 @@ vector<long long> GaBetweenVertex::findVectorNoIncVertex(vector<long long>p, Pro
 
 int GaBetweenVertex::returnRandVertex(vector<long long> vec, bool ch)
 {
-	int tmp = 0;
+ 	int tmp = 0;
 	if (vec.size() > 2 && ch == false)
 	{
 		tmp = 1 + rand() % (vec.size() - 2);

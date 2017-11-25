@@ -15,11 +15,15 @@ GaInAllGraph::~GaInAllGraph()
 {
 	population.clear();
 	visited.clear();
+	tmp_visited.clear();
+	index.clear();
+	new_population.clear();
+	//delete this;
 }
 
-vector<long long>GaInAllGraph::DRS(int i, int i1, Problem &G, vector<vector<long long> >&population, int number)
+vector<long long int>GaInAllGraph::DRS(int i, int i1, Problem &G, vector<vector<long long int> >&population, int number)
 {
-	vector<long long>notVis;
+	vector<long long int>notVis;
 
 	if (number == 1)
 	{
@@ -75,9 +79,8 @@ vector<long long>GaInAllGraph::DRS(int i, int i1, Problem &G, vector<vector<long
 	return population[i];
 }
 
-vector<vector<long long> > GaInAllGraph::generateFirstGeneration(Problem &G)
+vector<vector<long long int> > GaInAllGraph::generateFirstGeneration(Problem &G)
 {
-	srand(time(0));
 	for (size_t i = 0; i < population.size(); i++)
 	{
 		visited[i].resize(G.n);
@@ -86,12 +89,13 @@ vector<vector<long long> > GaInAllGraph::generateFirstGeneration(Problem &G)
 			visited[i][j] = false;
 		}
 		int l = rand() % (G.n - 1);
+	//	population[i].push_back(l);
 		population[i] = DRS(i, l, G, population, 1);
 	}
 	return population;
 }
 
-vector<vector<long long> > GaInAllGraph::Unic(vector<vector<long long> >&population1, int value, ...)
+vector<vector<long long int> > GaInAllGraph::Unic(vector<vector<long long int> >&population1, int value, ...)
 {
 	vector<int>param_vec;
 	va_list L;
@@ -121,7 +125,7 @@ vector<vector<long long> > GaInAllGraph::Unic(vector<vector<long long> >&populat
 			count = 0;
 			for (size_t k = 0; k < tmp_population.size(); k++)
 			{
-				vector<long long>a;
+				vector<long long int>a;
 				a.resize(population1[j].size());
 				reverse_copy(population1[j].begin(), population1[j].end(), a.begin());
 				if (population1[j] != tmp_population[k] && a != tmp_population[k])
@@ -141,8 +145,9 @@ vector<vector<long long> > GaInAllGraph::Unic(vector<vector<long long> >&populat
 	return tmp_population;
 }
 
-vector<vector<long long> > GaInAllGraph::selection(int i, Problem &G, vector<vector<long long> >&population1)
+vector<vector<long long int> > GaInAllGraph::selection(int i, Problem &G, vector<vector<long long int> >&population1)
 {
+
 	new_population.clear();
 	tmp_population.clear();
 	tmp_visited.clear();
@@ -170,7 +175,7 @@ vector<vector<long long> > GaInAllGraph::selection(int i, Problem &G, vector<vec
 		}
 	}
 
-	Unic(population1, 1 ,false);
+	Unic(population1, 1, false);
 	switch (i)
 	{
 	case 3:
@@ -218,7 +223,7 @@ vector<vector<long long> > GaInAllGraph::selection(int i, Problem &G, vector<vec
 
 			  if (size1 == tmp_population.size() && count_cross == 0)
 			  {
-				  cout << "There aren't non-intersepting paths.\n";
+//				  cout << "There aren't non-intersepting paths.\n";
 				  status = true;
 				  return tmp_population;
 
@@ -262,7 +267,7 @@ vector<vector<long long> > GaInAllGraph::selection(int i, Problem &G, vector<vec
 						  {
 							  if (tmp_visited[k][j] == tmp_visited[i][j] && tmp_visited[k][j] == true)
 							  {
-								  count++; 
+								  count++;
 							  }
 						  }
 
@@ -363,7 +368,7 @@ vector<vector<long long> > GaInAllGraph::selection(int i, Problem &G, vector<vec
 				  {
 
 					  int i = new_population.size()*percent;
-					  if (i % 2 == 0 )
+					  if (i % 2 == 0)
 					  {
 						  new_population.resize(i);
 						  visited.resize(i);
@@ -381,7 +386,8 @@ vector<vector<long long> > GaInAllGraph::selection(int i, Problem &G, vector<vec
 	return new_population;
 }
 
-vector<vector<long long> >GaInAllGraph::nonInterseptingPath(Problem&G, vector<vector<long long> >&new_population)
+
+vector<vector<long long int> >GaInAllGraph::nonInterseptingPath(Problem&G, vector<vector<long long int> >&new_population)
 {
 	int v1;
 	size_t  size = new_population.size();
@@ -436,11 +442,11 @@ vector<vector<long long> >GaInAllGraph::nonInterseptingPath(Problem&G, vector<ve
 	return new_population;
 }
 
-vector < vector <long long > > GaInAllGraph::start_nonInterseptingPath(Problem&D, int i)
+vector < vector <long long int > > GaInAllGraph::start_nonInterseptingPath(Problem&D, int i)
 {
 	type = 1;
-	vector<vector<long long> >sel;
-	vector<vector<long long> >disjoint;
+	vector<vector<long long int> >sel;
+	vector<vector<long long int> >disjoint;
 
 	unsigned int start_time = clock();
 	sel = selection(i, D, population);
@@ -473,8 +479,34 @@ vector < vector <long long > > GaInAllGraph::start_nonInterseptingPath(Problem&D
 	return res_population;
 }
 
+bool GaInAllGraph::testforVisited(vector<long long>&vec, Problem&G)
+{
+	vector<int>visitedPath;
+	visitedPath.resize(G.n);
+	bool visited = false;
+	
+	for (size_t k = 0; k < vec.size(); k++)
+	{
+		vector<long long int>::iterator it = find(vec.begin(), vec.end(), vec[k]);
+		if (it != vec.end())
+		{
+			visitedPath[*it]++;
+		}
+	}
 
-vector<vector<long long> >GaInAllGraph::intersectingPath(Problem&G, vector<vector<long long> >&new_population)
+	for (size_t j = 0; j < visitedPath.size(); j++)
+	{
+		if (visitedPath[j] > 1)
+		{
+			visited = true;
+			break;
+		}
+	}
+	return visited;
+}
+
+
+vector<vector<long long int> >GaInAllGraph::intersectingPath(Problem&G, vector<vector<long long int> >&new_population)
 {
 
 	int size = new_population.size();
@@ -488,27 +520,37 @@ vector<vector<long long> >GaInAllGraph::intersectingPath(Problem&G, vector<vecto
 				count++;
 			}
 		}
-		if ((index[i / 2][0] == index[i / 2][2]) && (index[i / 2][1] == index[i / 2][3]) && count==1)
+		if ((index[i / 2][0] == index[i / 2][2]) && (index[i / 2][1] == index[i / 2][3]))
 		{
-			new_population.resize(new_population.size() + 4);
+			int size = new_population.size() + 4;
+			new_population.resize(size);
 			//1 child
 			copy(new_population[i].begin(), new_population[i].begin() + index[i / 2][0], back_inserter(new_population[new_population.size() - 4]));
 			copy(new_population[i + 1].begin() + index[i / 2][1], new_population[i + 1].end(), back_inserter(new_population[new_population.size() - 4]));
+			if (testforVisited(new_population[new_population.size() - 4], G))   new_population[new_population.size() - 4] = RemoveCycles(new_population[new_population.size() - 4], 1);
 
 			//2 child
-			copy(new_population[i].begin(), new_population[i].begin() + index[i / 2][0] + 1, back_inserter(new_population[new_population.size() - 3]));
+			copy(new_population[i].begin(), new_population[i].begin() + index[i / 2][0], back_inserter(new_population[new_population.size() - 3]));
 			vector<int>a;
 			a.resize(new_population[i + 1].size());
 			reverse_copy(new_population[i + 1].begin(), new_population[i + 1].end(), a.begin());
 			int end2 = find(a.begin(), a.end(), new_population[i + 1][index[i / 2][1]]) - a.begin();
 			copy(a.begin(), a.begin() + end2, back_inserter(new_population[new_population.size() - 3]));
+
+			if (testforVisited(new_population[new_population.size() - 3], G)) new_population[new_population.size() - 3] = RemoveCycles(new_population[new_population.size() - 3], 1);
+
 			//3 child
 			copy(a.begin(), a.begin() + new_population[i + 1].size() - index[i / 2][1], back_inserter(new_population[new_population.size() - 2]));
-			copy(new_population[i].begin() + index[i / 2][0] + 1, new_population[i].end(), back_inserter(new_population[new_population.size() - 2]));
+			copy(new_population[i].begin() + index[i / 2][0], new_population[i].end(), back_inserter(new_population[new_population.size() - 2]));
+
+			if (testforVisited(new_population[new_population.size() - 2], G)) new_population[new_population.size() - 2] = RemoveCycles(new_population[new_population.size() - 2], 1);
 
 			//4 child
 			copy(new_population[i + 1].begin(), new_population[i + 1].begin() + index[i / 2][1], back_inserter(new_population[new_population.size() - 1]));
 			copy(new_population[i].begin() + index[i / 2][0], new_population[i].end(), back_inserter(new_population[new_population.size() - 1]));
+
+
+			if (testforVisited(new_population[new_population.size() - 1], G)) new_population[new_population.size() - 1] = RemoveCycles(new_population[new_population.size() - 1], 1);
 
 			for (size_t m = 4; m >0; m--)
 			{
@@ -526,35 +568,14 @@ vector<vector<long long> >GaInAllGraph::intersectingPath(Problem&G, vector<vecto
 			if ((index[i / 2][0] < index[i / 2][2] && index[i / 2][1] < index[i / 2][3]) || (index[i / 2][0] < index[i / 2][2] && index[i / 2][1] > index[i / 2][3]))
 			{
 				new_population.resize(new_population.size() + 2);
-				copy(new_population[i].begin(), new_population[i].begin() + index[i / 2][2] + 1, back_inserter(new_population[new_population.size() - 2]));
-				vector<long long>::iterator it;
+				copy(new_population[i].begin(), new_population[i].begin() + index[i / 2][2], back_inserter(new_population[new_population.size() - 2]));
+				copy(new_population[i + 1].begin() + index[i / 2][3], new_population[i + 1].end(), back_inserter(new_population[new_population.size() - 2]));
+			
+				if (testforVisited(new_population[new_population.size() - 2], G))  new_population[new_population.size() - 2] = RemoveCycles(new_population[new_population.size() - 2], 1);
+				copy(new_population[i + 1].begin(), new_population[i + 1].begin() + index[i / 2][3], back_inserter(new_population[new_population.size() - 1]));
+				copy(new_population[i].begin() + index[i / 2][2], new_population[i].end(), back_inserter(new_population[new_population.size() - 1]));	
+				if (testforVisited(new_population[new_population.size() - 1], G))  new_population[new_population.size() - 1] = RemoveCycles(new_population[new_population.size() - 1], 1);
 
-				for (size_t k = index[i / 2][3] + 1; k < new_population[i + 1].size(); k++)
-				{
-					it = find(new_population[new_population.size() - 2].begin(), new_population[new_population.size() - 2].end(), new_population[i + 1][k]);
-					if (it != new_population[new_population.size() - 2].end())
-					{
-						break;
-					}
-					else
-					{
-						new_population[new_population.size() - 2].push_back(new_population[i + 1][k]);
-					}
-				}
-
-				copy(new_population[i + 1].begin(), new_population[i + 1].begin() + index[i / 2][3] + 1, back_inserter(new_population[new_population.size() - 1]));
-				for (size_t k = index[i / 2][2] + 1; k < new_population[i].size(); k++)
-				{
-					it = find(new_population[new_population.size() - 1].begin(), new_population[new_population.size() - 1].end(), new_population[i][k]);
-					if (it != new_population[new_population.size() - 1].end())
-					{
-						break;
-					}
-					else
-					{
-						new_population[new_population.size() - 1].push_back(new_population[i][k]);
-					}
-				}
 			}
 			else
 			{
@@ -562,47 +583,18 @@ vector<vector<long long> >GaInAllGraph::intersectingPath(Problem&G, vector<vecto
 				size_t idx = index[i / 2][2];
 				copy(new_population[i].begin(), new_population[i].begin() + idx, back_inserter(new_population[new_population.size() - 2]));
 
-				vector<long long>a;
+				vector<long long int>a;
 				a.resize(new_population[i + 1].size());
 				reverse_copy(new_population[i + 1].begin(), new_population[i + 1].end(), a.begin());
 				int end2 = find(a.begin(), a.end(), new_population[i + 1][index[i / 2][3]]) - a.begin();
 
-
-				size_t ct1 = 0;
-				vector<long long>::iterator it;
-
-				for (size_t k = end2; k < a.size(); k++)
-				{
-					it = find(new_population[new_population.size() - 2].begin(), new_population[new_population.size() - 2].end(), a[k]);
-					if (it != new_population[new_population.size() - 2].end())
-					{
-						break;
-					}
-					else
-					{
-						new_population[new_population.size() - 2].push_back(a[k]);
-					}
-				}
-
+				copy(a.begin() + end2, a.end(), back_inserter(new_population[new_population.size() - 2]));
+				if (testforVisited(new_population[new_population.size() - 2], G))  new_population[new_population.size() - 2] = RemoveCycles(new_population[new_population.size() - 2], 1);
 				idx = end2 + 1;
 
 				copy(a.begin(), a.begin() + idx, back_inserter(new_population[new_population.size() - 1]));
-				ct1 = 0;
-
-				for (size_t k = index[i / 2][2] + 1; k < new_population[i].size(); k++)
-				{
-					it = find(new_population[new_population.size() - 1].begin(), new_population[new_population.size() - 1].end(), new_population[i][k]);
-					if (it != new_population[new_population.size() - 1].end())
-					{
-						break;
-					}
-					else
-					{
-						new_population[new_population.size() - 1].push_back(new_population[i][k]);
-					}
-				}
-
-
+				copy(new_population[i].begin(), new_population[i].begin() + index[i / 2][2], back_inserter(new_population[new_population.size() - 1]));
+				if (testforVisited(new_population[new_population.size() - 1], G))  new_population[new_population.size() - 1] = RemoveCycles(new_population[new_population.size() - 1], 1);			
 			}
 
 			for (size_t m = 2; m > 0; m--)
@@ -620,11 +612,11 @@ vector<vector<long long> >GaInAllGraph::intersectingPath(Problem&G, vector<vecto
 	return new_population;
 }
 
-vector <vector <long long> > GaInAllGraph::start_intersectingPath(Problem&D, int i)
+vector <vector <long long int> > GaInAllGraph::start_intersectingPath(Problem&D, int i, int n)
 {
 	type = 2;
-	vector<vector<long long> >sel;
-	vector<vector<long long> >join;
+	vector<vector<long long int> >sel;
+	vector<vector<long long int> >join;
 	int size1 = 0;
 	int size2 = 0;
 	int size3 = 0;
@@ -635,16 +627,22 @@ vector <vector <long long> > GaInAllGraph::start_intersectingPath(Problem&D, int
 	size_t z = 0;
 	if (count>0)
 	{
+		int ct = 0;
 		do
 		{
+	     	if (ct >= n) break;
 			size3 = size1;
-			size1 = size2;
 			join = intersectingPath(D, sel);
+			size1 = size2;
 			sel = selection(i, D, join);
 			if (sel.empty()) break;
-			size2 = sel.size();
+			size2 = tmp_population.size();
+			ct++;
+			if (size1 == size2) break;
+			else if (size2 == size3) break;
 
-		} while (size2 != size3);
+		} while (size1!=size2 || size2!=size3 || ct < n);
+
 	}
 
 	if (count == 0)
@@ -669,9 +667,8 @@ vector <vector <long long> > GaInAllGraph::start_intersectingPath(Problem&D, int
 
 }
 
-vector<vector<long long>> GaInAllGraph::mutationMechanism(vector<vector<long long> >&new_population, Problem &G)
+vector<vector<long long int>> GaInAllGraph::mutationMechanism(vector<vector<long long int> >&new_population, Problem &G)
 {
-
 	int v1;
 	int v2;
 	int m = new_population.size();
@@ -682,7 +679,7 @@ vector<vector<long long>> GaInAllGraph::mutationMechanism(vector<vector<long lon
 		do {
 			v1 = rand() % r1;
 			p1++;
-			if (G.graph[v1].size() >= 3) break;
+			if (G.graph[v1].size() < 3) break;
 		} while (p1 < r1);
 
 		int r2 = r1 + 1;
@@ -690,7 +687,7 @@ vector<vector<long long>> GaInAllGraph::mutationMechanism(vector<vector<long lon
 		do {
 			v2 = rand() % (new_population[g].size() - r1) + r1;
 			p2++;
-			if (G.graph[v2].size() >= 3) break;
+			if (G.graph[v2].size() < 3) break;
 		} while (p2 < r2);
 
 		int j = new_population.size();
@@ -719,11 +716,11 @@ vector<vector<long long>> GaInAllGraph::mutationMechanism(vector<vector<long lon
 	return new_population;
 }
 
-vector <vector <long long> > GaInAllGraph::start_mutationMechanism(Problem&D, int i, int n)
+vector <vector <long long int> > GaInAllGraph::start_mutationMechanism(Problem&D, int i, int n)
 {
 	type = 3;
-	vector<vector<long long> >sel;
-	vector<vector<long long> >mut;
+	vector<vector<long long int> >sel;
+	vector<vector<long long int> >mut;
 	unsigned int start_time = clock();
 	sel = selection(i, D, population);
 	mut = mutationMechanism(sel, D);
@@ -748,9 +745,9 @@ vector <vector <long long> > GaInAllGraph::start_mutationMechanism(Problem&D, in
 	return res_population;
 }
 
-vector <vector <long long>>  GaInAllGraph::Result(vector<vector<long long> > n_population)
+vector <vector <long long int>>  GaInAllGraph::Result(vector<vector<long long int> > n_population)
 {
-	vector <vector <long long> > tmp;
+	vector <vector <long long int> > tmp;
 	tmp.push_back(n_population[0]);
 
 	for (size_t i = 1; i < n_population.size(); i++)
@@ -776,14 +773,14 @@ void GaInAllGraph::clear()
 	visited.clear();
 }
 
-vector <vector <long long> > GaInAllGraph::start_bothPairsOfPaths(Problem&D, int i, int n)
+vector <vector <long long int> > GaInAllGraph::start_bothPairsOfPaths(Problem&D, int i, int n)
 {
 	type = 4;
-	vector<vector<long long> >sel1;
-	vector<vector<long long> >disjoint1;
-	vector<vector<long long> >sel2;
-	vector<vector<long long> >disjoint2;
-	vector<vector<long long> > save;
+	vector<vector<long long int> >sel1;
+	vector<vector<long long int> >disjoint1;
+	vector<vector<long long int> >sel2;
+	vector<vector<long long int> >disjoint2;
+	vector<vector<long long int> > save;
 	vector<vector<bool> > save_vis;
 	save.resize(population.size());
 	copy(population.begin(), population.end(), back_inserter(save));
@@ -797,14 +794,18 @@ vector <vector <long long> > GaInAllGraph::start_bothPairsOfPaths(Problem&D, int
 	unsigned int start_time = clock();
 
 	int ct = 0;
+	bool old1 = false;
+	bool old2 = false;
 
-	do
+	while (ct < n )
+	//while (ct > n || (old1 == true && old2 == true) || ((clock() - start_time) / 1000.0) < 3000)
 	{
 	    if (!met1.population.empty()) sel1 = met1.selection(1, D, met1.population);
 		if (!met2.population.empty()) sel2 = met2.selection(2, D, met2.population);
 
 		this->clear();
 
+	
 		if (met1.status == false)
 		{
 			disjoint1 = met1.nonInterseptingPath(D, met1.new_population);
@@ -819,26 +820,35 @@ vector <vector <long long> > GaInAllGraph::start_bothPairsOfPaths(Problem&D, int
 			copy(met2.visited.begin(), met2.visited.end(), back_inserter(visited));
 		}
 
-		met1.clear();
+	    old1 = met1.status;
+		old2 = met2.status;
+ 		met1.clear();
 		met2.clear();
 		met1 = *this;
 		met2 = *this;
 		ct++;
-	} while (ct != n);
-
+	}
 	
 	if (!population.empty())
 	{
 		this->Sort1(population);
-		res_population = Unic(population, 1, false);
+		res_population = Result(Unic(population, 1, false));
+		
 	}
 	else
 	{
 		this->status = true;
 		this->Sort1(save);
-		res_population = Unic(save, 1, true);
+		res_population = Result(Unic(save, 1, true));
 	}
 	unsigned int end_time = clock();
 	time1 = (end_time - start_time) / 1000.0;
+	this->population.clear();
+	this->visited.clear();
+	this->tmp_visited.clear();
+	this->index.clear();
+	this->new_population.clear();
+	this->tmp_population.clear();
+	this->tmp_visited.clear();
 	return res_population;
 }

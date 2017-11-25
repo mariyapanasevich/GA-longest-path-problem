@@ -17,6 +17,13 @@ public:
 	double time1;
 	vector<vector<long long> > res_population;
 
+	~GA()
+	{
+		populationSize = 0;
+			population.clear();
+		time1 = 0;
+		res_population.clear();
+	}
 
 	int populationSize;
 	vector<vector<long long>> population;
@@ -32,7 +39,7 @@ public:
 	vector<vector<long long>> Sort1(vector<vector<long long>> population)
 	{
 		sort(population.begin(), population.end(), sizecom);
-		population = Unic(population, 0);
+		population = Unic(population, 1, true);
 		return population;
 	}
 	vector <vector <long long>> Result(vector<vector<long long> > n_population)
@@ -53,13 +60,13 @@ public:
 
 		return tmp;
 	}
-	
+
 
 	vector<long long> RemoveCycles(vector<long long> p, int type)
 	{
 		int rightpos = 0;
 		int pos;
-		int number = (type == 2) ? 1:0;
+		int number = (type == 2) ? 1 : 0;
 		for (size_t i = number; i < p.size(); i++)
 		{
 			pos = rightmostindex(p, i);

@@ -68,7 +68,7 @@ void GAWithWeight::procedure(ProblemWeight &graph, int step)
 
 	this->graph = graph;
 	this->generateFirstGenerationWeight();
-	srand(time(0));
+	//(time(0));
 	int count = 0;
 	int weigthpath = weight[0];
 	while (count < step || (weight[0] != weigthpath && count != 0 ))
