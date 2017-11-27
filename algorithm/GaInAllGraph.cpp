@@ -390,7 +390,10 @@ vector<vector<long long int> > GaInAllGraph::selection(int i, Problem &G, vector
 vector<vector<long long int> >GaInAllGraph::nonInterseptingPath(Problem&G, vector<vector<long long int> >&new_population)
 {
 	int v1;
-	size_t  size = new_population.size();
+	
+	vector<int>pre_candidation;
+	vector<pair<int, int>>pre_candidation_idx;
+	size_t size = new_population.size();
 	for (size_t i = 0; i < size; i = i + 2)
 	{
 		for (size_t j = 1; j < new_population[i].size() - 1; j++)
@@ -399,44 +402,51 @@ vector<vector<long long int> >GaInAllGraph::nonInterseptingPath(Problem&G, vecto
 			{
 				for (size_t l = 0; l < new_population[i + 1].size() - 1; l++)
 				{
-
 					if (G.graph[new_population[i][j]][k] == new_population[i + 1][l])
 					{
-						v1 = G.graph[new_population[i][j]][k];
-						visited.resize(new_population.size() + 4);
-						new_population.resize(new_population.size() + 4);
-						copy(new_population[i].begin(), new_population[i].begin() + j + 1, back_inserter(new_population[new_population.size() - 4]));
-						copy(new_population[i + 1].begin() + l, new_population[i + 1].end(), back_inserter(new_population[new_population.size() - 4]));
-						copy(new_population[i + 1].begin(), new_population[i + 1].begin() + l + 1, back_inserter(new_population[new_population.size() - 3]));
-						copy(new_population[i].begin() + j, new_population[i].end(), back_inserter(new_population[new_population.size() - 3]));
-						copy(new_population[i].begin(), new_population[i].begin() + j + 1, back_inserter(new_population[new_population.size() - 2]));
-						vector<int>a;
-						a.resize(l + 1);
-						reverse_copy(new_population[i + 1].begin(), new_population[i + 1].begin() + l + 1, a.begin());
-						copy(a.begin(), a.end(), back_inserter(new_population[new_population.size() - 2]));
-						a.clear();
-						a.resize(new_population[i].size() - j);
-						reverse_copy(new_population[i].begin() + j, new_population[i].end(), a.begin());
-						copy(a.begin(), a.end(), back_inserter(new_population[new_population.size() - 1]));
-						copy(new_population[i + 1].begin() + l, new_population[i + 1].end(), back_inserter(new_population[new_population.size() - 1]));
+						pre_candidation.push_back(G.graph[new_population[i][j]][k]);
+						pre_candidation_idx.resize(pre_candidation_idx.size()+1);
+						pre_candidation_idx[pre_candidation_idx.size() - 1].first = j;
+						pre_candidation_idx[pre_candidation_idx.size() - 1].second = l;
 
-						for (size_t m = 4; m >0; m--)
-						{
-							visited[new_population.size() - m].resize(G.n);
-							for (size_t k = 0; k < new_population[new_population.size() - m].size(); k++)
-							{
-								visited[new_population.size() - m][new_population[new_population.size() - m][k]] = true;
-							}
-						}
-						break;
 					}
-
 				}
+			}
+		}
+		
+		if (pre_candidation.size() > 0)
+		{
+			v1 = (pre_candidation.size() == 1)?0:(rand() % pre_candidation.size());
+			visited.resize(new_population.size() + 4);
+			new_population.resize(new_population.size() + 4);
+			copy(new_population[i].begin(), new_population[i].begin() + pre_candidation_idx[v1].first + 1, back_inserter(new_population[new_population.size() - 4]));
+			copy(new_population[i + 1].begin() + pre_candidation_idx[v1].second, new_population[i + 1].end(), back_inserter(new_population[new_population.size() - 4]));
+			copy(new_population[i + 1].begin(), new_population[i + 1].begin() + pre_candidation_idx[v1].second+1, back_inserter(new_population[new_population.size() - 3]));
+			copy(new_population[i].begin() + pre_candidation_idx[v1].first, new_population[i].end(), back_inserter(new_population[new_population.size() - 3]));
+			copy(new_population[i].begin(), new_population[i].begin() + pre_candidation_idx[v1].first + 1, back_inserter(new_population[new_population.size() - 2]));
+			vector<int>a;
+			a.resize(pre_candidation_idx[v1].second + 1);
+			reverse_copy(new_population[i + 1].begin(), new_population[i + 1].begin() + pre_candidation_idx[v1].second + 1, a.begin());
+			copy(a.begin(), a.end(), back_inserter(new_population[new_population.size() - 2]));
+			a.clear();
+			a.resize(new_population[i].size() - pre_candidation_idx[v1].first);
+			reverse_copy(new_population[i].begin() + pre_candidation_idx[v1].first, new_population[i].end(), a.begin());
+			copy(a.begin(), a.end(), back_inserter(new_population[new_population.size() - 1]));
+			copy(new_population[i + 1].begin() + pre_candidation_idx[v1].second, new_population[i + 1].end(), back_inserter(new_population[new_population.size() - 1]));
 
-
+			for (size_t m = 4; m > 0; m--)
+			{
+				visited[new_population.size() - m].resize(G.n);
+				for (size_t k = 0; k < new_population[new_population.size() - m].size(); k++)
+				{
+					visited[new_population.size() - m][new_population[new_population.size() - m][k]] = true;
+				}
 			}
 
+			pre_candidation.clear();
+			pre_candidation_idx.clear();
 		}
+			
 	}
 
 	return new_population;
