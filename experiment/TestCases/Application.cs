@@ -141,12 +141,14 @@ namespace ExperimentForLPP
         {
             for (int i = 0; i < element.Count(); i++)
             {
-                string tmp = "Строка " + i.ToString();
+                List<string> list = new List<string>(2);
+                list.Add("First vertex Строка " + i.ToString());
+                list.Add("Second vertex Строка " + i.ToString());
 
-                List<IWebElement> obj = driver.FindElement(By.Name(tmp)).FindElements(By.Name(" " + tmp)).ToList();
-                for (int j = 0; j < obj.Count(); j++)
-                {
-                    obj[j].SendKeys(element[i][j].ToString());
+                for (int j = 0; j < list.Count(); j++)
+               {
+                    IWebElement obj = driver.FindElement(By.Name(list[j]));
+                    obj.SendKeys(element[i][j].ToString());
                 }
             }
         }
@@ -179,7 +181,7 @@ namespace ExperimentForLPP
             do
             {
                 start.Click();
-                Thread.Sleep(time*1000);
+                Thread.Sleep(time*100);
                 num++;
             }
             while (cycle != num);
