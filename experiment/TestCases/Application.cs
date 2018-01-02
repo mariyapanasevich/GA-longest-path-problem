@@ -11,13 +11,13 @@ using System.Text.RegularExpressions;
 using OpenQA.Selenium.Support.UI;
 using System.Threading;
 using ExperimentForLPP.Classes;
+using ExperimentForLPP.Configurations;
 
 namespace ExperimentForLPP
 {
-    class Application
+    public class Application
     {
-        GA obj;
-
+       
         private IWebDriver driver;
 
         [FindsBy(How = How.Id, Using = "textBox1")]
@@ -67,20 +67,19 @@ namespace ExperimentForLPP
 
         [FindsBy(How = How.Id, Using = "dataGridView1")]
         public IWebElement dataGrid { get; set; }
-        private int num;
+    //    private int num;
         public Application(IWebDriver driver)
         {
             this.driver = driver;
             PageFactory.InitElements(driver, this);
-            num = 0;
+//            num = 0;
         }
 
-        public void findlongestPath(int type)
+        public void findlongestPath(int type, GA obj)
         {
             numVertex.SendKeys(obj.numVertex.ToString());
             numEdge.SendKeys(obj.numEdge.ToString());
-            List<List<int>> dataTable = stringToList(obj.graph, obj.numEdge);
-            setValue(dataTable);
+            List<List<int>> dataTable = stringToList(obj);
             SizePop.SendKeys(obj.PopulationSize.ToString());
 
             try
@@ -116,6 +115,8 @@ namespace ExperimentForLPP
                     {
                         numStep.SendKeys(data.numberStep.ToString());
                     }
+                    this.setValue(dataTable);
+
                 }
                 else if (type == 2)
                 {
@@ -146,16 +147,16 @@ namespace ExperimentForLPP
                 list.Add("Second vertex Строка " + i.ToString());
 
                 for (int j = 0; j < list.Count(); j++)
-               {
+                {
                     IWebElement obj = driver.FindElement(By.Name(list[j]));
                     obj.SendKeys(element[i][j].ToString());
                 }
             }
         }
 
-        public List<List<int>> stringToList(string value, int numEdge)
+        public List<List<int>> stringToList(GA obj1)
         {
-            List<string> tmp1 = value.Split(new Char[] { '\n' }).ToList();
+            List<string> tmp1 = obj1.graph.Split(new Char[] { '\n' }).ToList();
 
             List<List<int>> result = new List<List<int>>();
             for (int i = 0; i < tmp1.Count(); i++)
@@ -166,27 +167,42 @@ namespace ExperimentForLPP
         }
 
 
-        public void cycleStart(int type, int time, int cycle)
+        public void cycleStart<T>(int i, int time, int cycle)
         {
-            if (type == 1)
+            IList<T> data = new List<T>();
+
+            if (i == 1)
             {
-                obj = ExcelDataAccess.GetTestData<GaInAllPath>(type);
+                IList<GaInAllPath> objInfo = ExcelDataAccess.ReadExcel<GaInAllPath>(i);
+                data = (IList<T>)Convert.ChangeType(objInfo, typeof(List<T>));
             }
-            else if (type == 2)
+            else if (i == 2)
             {
-                obj = ExcelDataAccess.GetTestData<GaBetweenVertex>(type);
+                IList<GaBetweenVertex> objInfo = ExcelDataAccess.ReadExcel<GaBetweenVertex>(i);
+                data = (IList<T>)Convert.ChangeType(objInfo, typeof(List<T>));
             }
 
-            findlongestPath(type);
-            do
+            for (int j = 0; j < data.Count; j++)
             {
-                start.Click();
-                Thread.Sleep(time*100);
-                num++;
+                GA dt;
+                if (i == 1) dt = (GaInAllPath)Convert.ChangeType(data[j], typeof(GaInAllPath));
+                else dt = (GaBetweenVertex)Convert.ChangeType(data[j], typeof(GaBetweenVertex));
+                int num = 0;
+                findlongestPath(i, dt);
+                do
+                {
+                    start.Click();
+                    Thread.Sleep(time * 100);
+                    num++;
+                }
+                while (num < cycle);
+                driver.Close();
+                if (j + 1 != data.Count)
+                {
+                    Setting set = new Setting();
+                    Application app = set.open();
+                }
             }
-            while (cycle != num);
-
-            driver.Close();
         }
 
     }
