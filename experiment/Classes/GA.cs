@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ExperimentForLPP.Classes
 {
-   abstract class GA
+   public abstract class GA
     {
        public int PopulationSize { get; set; }
        public int typeTask { get; set; }
@@ -14,7 +14,9 @@ namespace ExperimentForLPP.Classes
        public int numVertex { get; set; }
        public int numEdge { get; set; }
        public int numberStep { get; set; }
-       public GA() {}   
+       public double time { get; set; }
+       public GA() {}
+   
    }
 }
 

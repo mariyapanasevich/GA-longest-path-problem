@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 
 namespace ExperimentForLPP.Classes
 {
-    class GaInAllPath:GA
+    public class GaInAllPath:GA
     {
         public GaInAllPath() :base() 
         {
             this.typeTask = 1;
         }
+
+   
 
         public void setTypeAlgorithm()
         {
@@ -37,5 +39,8 @@ namespace ExperimentForLPP.Classes
         public double persentToCross { get; set; }
         public int typeAlgorithm { get; set; }
         public String Name { get; set; }
+
+     
+
     }
 }

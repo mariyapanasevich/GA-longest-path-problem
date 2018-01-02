@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ExperimentForLPP.Classes
 {
-    class GaBetweenVertex:GA
+    public class GaBetweenVertex:GA
     {
         public GaBetweenVertex():base()
         {
