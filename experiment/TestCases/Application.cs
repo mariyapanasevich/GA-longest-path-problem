@@ -81,6 +81,7 @@ namespace ExperimentForLPP
             numEdge.SendKeys(obj.numEdge.ToString());
             List<List<int>> dataTable = stringToList(obj);
             SizePop.SendKeys(obj.PopulationSize.ToString());
+            this.setValue(dataTable);
 
             try
             {
@@ -115,7 +116,6 @@ namespace ExperimentForLPP
                     {
                         numStep.SendKeys(data.numberStep.ToString());
                     }
-                    this.setValue(dataTable);
 
                 }
                 else if (type == 2)
