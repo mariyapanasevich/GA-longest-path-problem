@@ -41,6 +41,6 @@ PGconn* DatabaseWriter::ConnectDB()
 void DatabaseWriter::error(string mess)
 {
 	String^ res1 = marshal_as<String^>(mess);
-	MessageBox::Show(res1 , "Error", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);	
+	MessageBox::Show(res1, "Error", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
 	exit(1);
 }
