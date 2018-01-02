@@ -7,26 +7,26 @@ using System.Threading.Tasks;
 namespace ExperimentForLPP
 {
     using System;
-
+    using Classes;
     using OpenQA.Selenium;
     using OpenQA.Selenium.Remote;
     using OpenQA.Selenium.Support.PageObjects;
+    using ExperimentForLPP.Configurations;
 
     public class Program
     {
         private static void Main(string[] args)
         {
-            Console.WriteLine("Select type algorithm:\n1-Genetic Algorithm in all path\n2-Genetic Algorithm between vertex");
+            Console.WriteLine("Select task algorithm:\n1-Genetic Algorithm in all graph\n2-Genetic Algorithm between vertex");
             int i = Int32.Parse(Console.ReadLine());
             Console.WriteLine("Input time wait (in second): ");
             int time = Int32.Parse(Console.ReadLine());
-
-            var dc = new DesiredCapabilities();
-            dc.SetCapability("app", @"E:/BackUp/GA/Debug/form1.exe");
-            var driver = new RemoteWebDriver(new Uri("http://localhost:9999"), dc);
-            var app = new Application(driver);
-            app.findlongestPath(i, time);
-          
+            Console.WriteLine("Input number experement: ");
+            int number = Int32.Parse(Console.ReadLine());
+            Setting set = new Setting();
+            Application app = set.open();
+            if (i == 1)  app.cycleStart<GaInAllPath>(i, time, number);
+            else app.cycleStart<GaBetweenVertex>(i, time, number);
         }
 
     }
