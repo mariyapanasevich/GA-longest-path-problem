@@ -14,6 +14,7 @@
 #include "GAWithWeight.h"
 #include <stdarg.h>
 #include <stdlib.h>
+#include <ctime>
 
 using namespace std;
 using namespace msclr::interop;
@@ -110,6 +111,8 @@ namespace form1 {
 
 		MyForm(void)
 		{
+			srand(time(0));
+
 			InitializeComponent();
 			textBox5->Enabled = false;
 			InitializeTrackBar();
@@ -120,7 +123,7 @@ namespace form1 {
 			enabledBetweenVertex();
 			enabledAllVertex();
 			tabPage1->Text = "Genetic Algorithm in an unweighted graph";
-			tabPage2->Text = "Genetic Algorithm in an weighted graph";
+			tabPage2->Text = "Genetic Algorithm in a weighted graph";
 
 		}
 
@@ -760,7 +763,7 @@ namespace form1 {
 			this->radioButton1->TabStop = true;
 			this->radioButton1->Text = L"using non - intersecting paths";
 			this->radioButton1->UseVisualStyleBackColor = true;
-			this->radioButton1->CheckedChanged += gcnew System::EventHandler(this, &MyForm::radioButton1_CheckedChanged_1);
+			this->radioButton1->CheckedChanged += gcnew System::EventHandler(this, &MyForm::radioButton1_CheckedChanged);
 			// 
 			// label14
 			// 
@@ -890,7 +893,7 @@ namespace form1 {
 			// 
 			this->Genetic->Controls->Add(this->tabPage1);
 			this->Genetic->Controls->Add(this->tabPage2);
-			this->Genetic->Location = System::Drawing::Point(12, 41);
+			this->Genetic->Location = System::Drawing::Point(12, 45);
 			this->Genetic->Name = L"Genetic";
 			this->Genetic->SelectedIndex = 0;
 			this->Genetic->Size = System::Drawing::Size(973, 567);
@@ -931,21 +934,19 @@ namespace form1 {
 
 		void table()
 		{
+			createTable(dataGridView1, 1);
 			if (textBox2->Text != "")
 			{
 				dataGridView1->RowCount = Convert::ToInt32(textBox2->Text);
-				dataGridView1->ColumnCount = 2;
-				for (int i = 0; i < dataGridView1->ColumnCount; i++)  dataGridView1->Columns[i]->Width = 50;
 			}
 		}
 
 		void table2()
 		{
+		    createTable(dataGridView2, 2);
 			if (textBox8->Text != "")
 			{
 				dataGridView2->RowCount = Convert::ToInt32(textBox8->Text);
-				dataGridView2->ColumnCount = 3;
-				for (int i = 0; i < dataGridView2->ColumnCount; i++)  dataGridView2->Columns[i]->Width = 50;
 			}
 		}
 
@@ -1023,7 +1024,7 @@ namespace form1 {
 				 if (radioButton3->Checked == true) textBox5->Enabled = true;
 	}
 	private: System::Void radioButton2_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
-				 if (radioButton2->Checked == true) textBox5->Enabled = false;
+				 if (radioButton2->Checked == true) textBox5->Enabled = true;
 	}
 	private: System::Void radioButton1_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
 				 if (radioButton1->Checked == true) textBox5->Enabled = false;
@@ -1033,9 +1034,8 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 				 connect.ConnectDB();
 
 				 listBox1->Items->Clear();
-
 				 bool remark = false;
-				 for (size_t i = 0; i < dataGridView1->RowCount - 1; i++)
+				 for (size_t i = 0; i < Convert::ToInt32(textBox2->Text); i++)
 				 {
 
 					 try
@@ -1067,7 +1067,7 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 				 if ((textBox1->Text != "") && (textBox2->Text != "") && (textBox3->Text != ""))
 				 {
 					 Problem D(Convert::ToInt32(textBox1->Text), Convert::ToInt32(textBox2->Text));
-					 for (size_t i = 0; i < dataGridView1->RowCount - 1; i++)
+					 for (size_t i = 0; i < Convert::ToInt32(textBox2->Text); i++)
 					 {
 						 D.graph_add(Convert::ToInt32(dataGridView1->Rows[i]->Cells[0]->Value), Convert::ToInt32(dataGridView1->Rows[i]->Cells[1]->Value));
 					 }
@@ -1081,11 +1081,12 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 					 {
 
 						 GaInAllGraph population1(size);
+						 
 						 population1.generateFirstGeneration(D);
 						 double percent = 0;
 						 percent = Convert::ToDouble(textBox4->Text);
 						 int n = 0;
-						 population1.percent = percent / 100;
+						 population1.percent = (double)percent /(double) 100;
 						 if (radioButton1->Checked)
 						 {
 							 res = population1.start_nonInterseptingPath(D, 1);
@@ -1093,7 +1094,8 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 						 }
 						 if (radioButton2->Checked)
 						 {
-							 res = population1.start_intersectingPath(D, 2);
+							 n = Convert::ToInt32(textBox5->Text);
+							 res = population1.start_intersectingPath(D, 2, n);
 							 status = true;
 
 						 }
@@ -1140,26 +1142,29 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 								 resPath = "There aren't non-intersepting or intersepting points and paths.\n";
 							 }
 
-							 if (radioButton1->Checked == true || radioButton2->Checked == true)
+							 if (radioButton1->Checked == true)
 							 {
 								 if (population1.status == false)
-								 connect.insertData(population1.typeTask, population1, D, 0);
+									 connect.insertData(population1.typeTask, population1, D, 0);
 							 }
 							 else
 							 {
 								 if (population1.status == false)
-								 connect.insertData(population1.typeTask, population1, D, 1, n);
+									 connect.insertData(population1.typeTask, population1, D, 1, n);
 							 }
 
-							 String^ tmp = Convert::ToString(res[0].size() - 1);
+							 int size3 = res[0].size();
+
+							 String^ tmp = Convert::ToString(size3-1);
 							 string size1 = msclr::interop::marshal_as<string>(tmp);
-							 resPath = "The length of longest path is " + size1 + ".\n";
+							 resPath = resPath +"\n"+"The length of longest path is " + size1 + ".\n";
 							 writeResPath(listBox1,res, resPath, true);
 							 int a = this->listBox1->Items->Count;
 							 String^ time;
 							 string time_str = "\nTime:" + to_string(population1.time1) + " sec.";
 							 time = marshal_as<String^>(time_str);
 							 this->listBox1->Items->Insert(a, time);
+							 population1.clear();
 						 }
 
 					 }
@@ -1199,7 +1204,7 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 							 String^ result;
 
 							 result = marshal_as<String^>(resPath);
-							 writeResPath(listBox1,res, resPath, false);
+							 this->writeResPath(listBox1,res, resPath, false);
 							 String^ time;
 							 string time_str = "Time:" + to_string(object.time1) + " sec.";
 							 time = marshal_as<String^>(time_str);
@@ -1403,13 +1408,14 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 							   if (i == 0) dataGridView1->Columns[i]->Name = "First vertex";
 							   if (i == 1) dataGridView1->Columns[i]->Name = "Second vertex";
 							   if (i == 2 && value==2) dataGridView1->Columns[i]->Name = "Weight between vertex";
-
+							   
 							   dataGridView1->Columns[i]->Width = 50;
 						   }
 							  
 			  }
 			 private: void visible(DataGridView^ dataGridView, vector<string>table, int i)
 			 {
+
 //				 dataGridView->Rows->Add();
 				 for (size_t j = 0; j < table.size(); j++)
 					 dataGridView->Rows[i]->Cells[j]->Value = marshal_as<String^>(table[j]);
@@ -1434,7 +1440,10 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 				 openFileDialog.FilterIndex = 1;
 				 openFileDialog.RestoreDirectory = true;
 
-			
+
+				 if (tabPage1->Visible == true) createTable(dataGridView1, 1);
+				 else if (tabPage2->Visible == true) createTable(dataGridView2, 2);
+
 					 int max = 0;
 					 if (openFileDialog.ShowDialog() == System::Windows::Forms::DialogResult::OK)
 					 {
@@ -1442,9 +1451,6 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 						 string path = msclr::interop::marshal_as<string>(tmp_path);
 						 string str;
 						 ifstream infile;
-						
-						 if (tabPage1->Visible == true) createTable(dataGridView1, 1);
-						 else if (tabPage2->Visible == true) createTable(dataGridView2, 2);
 
 						 int ch = 0;
 						 string s;
@@ -1573,7 +1579,7 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 								 outputFile << "Percent for crossover: " << msclr::interop::marshal_as<string>(Convert::ToString(textBox4->Text) + " %") << endl;
 							 }
 
-							 if (radioButton3->Checked || radioButton4->Checked || checkBox2->Checked == true) outputFile << "Number steps: " << msclr::interop::marshal_as<string>(Convert::ToString(textBox5->Text)) << endl;
+							 if (radioButton3->Checked || radioButton4->Checked || radioButton2->Checked || checkBox2->Checked == true) outputFile << "Number steps: " << msclr::interop::marshal_as<string>(Convert::ToString(textBox5->Text)) << endl;
 							 outputFile << "Result:" << endl;
 
 
@@ -1699,7 +1705,8 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 	
 	private: System::Void textBox5_TextChanged(System::Object^  sender, System::EventArgs^  e) {
 
-				 if (radioButton3->Checked == true || radioButton4->Checked == true || checkBox2->Checked == true)
+				 if (radioButton3->Checked == true || radioButton4->Checked == true || radioButton2->Checked == true
+					 || checkBox2->Checked == true)
 				 {
 
 					 if (textBox5->Text != "")
@@ -2056,7 +2063,7 @@ private: System::Void button4_Click(System::Object^  sender, System::EventArgs^ 
 				 int size = Convert::ToInt32(textBox10->Text);
 
 				 GAWithWeight g(size);
-
+				
 				 g.probabilityMutation = Convert::ToDouble(textBox11->Text);
 				 g.procedure(D, Convert::ToInt32(textBox12->Text));
 
@@ -2065,6 +2072,7 @@ private: System::Void button4_Click(System::Object^  sender, System::EventArgs^ 
 				 writeResPathWithWeight(listBox2, g.res_population, g.resWeigthPath, resPath);
 				 int ct = this->listBox2->Items->Count;
 				 this->listBox2->Items->Insert(ct, marshal_as<String^>("\nTime:" + to_string(g.time1) + " sec."));
+				 connect.insertData(g.typeTask, g, D, 1, Convert::ToInt32(textBox12->Text));
 
 			 }
 
