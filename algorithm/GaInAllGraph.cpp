@@ -176,6 +176,8 @@ vector<vector<long long int> > GaInAllGraph::selection(int i, Problem &G, vector
 	}
 
 	Unic(population1, 1, false);
+	int p = tmp_population.size()*percent;
+	//tmp_population.resize(p);
 	switch (i)
 	{
 	case 3:
@@ -367,7 +369,6 @@ vector<vector<long long int> > GaInAllGraph::selection(int i, Problem &G, vector
 				  if (new_population.size() > 100)
 				  {
 
-					  int i = new_population.size()*percent;
 					  if (i % 2 == 0)
 					  {
 						  new_population.resize(i);
@@ -419,11 +420,11 @@ vector<vector<long long int> >GaInAllGraph::nonInterseptingPath(Problem&G, vecto
 			v1 = (pre_candidation.size() == 1)?0:(rand() % pre_candidation.size());
 			visited.resize(new_population.size() + 4);
 			new_population.resize(new_population.size() + 4);
-			copy(new_population[i].begin(), new_population[i].begin() + pre_candidation_idx[v1].first + 1, back_inserter(new_population[new_population.size() - 4]));
+			copy(new_population[i].begin(), new_population[i].begin() + pre_candidation_idx[v1].first , back_inserter(new_population[new_population.size() - 4]));
 			copy(new_population[i + 1].begin() + pre_candidation_idx[v1].second, new_population[i + 1].end(), back_inserter(new_population[new_population.size() - 4]));
-			copy(new_population[i + 1].begin(), new_population[i + 1].begin() + pre_candidation_idx[v1].second+1, back_inserter(new_population[new_population.size() - 3]));
+			copy(new_population[i + 1].begin(), new_population[i + 1].begin() + pre_candidation_idx[v1].second, back_inserter(new_population[new_population.size() - 3]));
 			copy(new_population[i].begin() + pre_candidation_idx[v1].first, new_population[i].end(), back_inserter(new_population[new_population.size() - 3]));
-			copy(new_population[i].begin(), new_population[i].begin() + pre_candidation_idx[v1].first + 1, back_inserter(new_population[new_population.size() - 2]));
+			copy(new_population[i].begin(), new_population[i].begin() + pre_candidation_idx[v1].first , back_inserter(new_population[new_population.size() - 2]));
 			vector<int>a;
 			a.resize(pre_candidation_idx[v1].second + 1);
 			reverse_copy(new_population[i + 1].begin(), new_population[i + 1].begin() + pre_candidation_idx[v1].second + 1, a.begin());
