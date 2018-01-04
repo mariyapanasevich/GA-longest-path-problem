@@ -29,7 +29,7 @@ public:
 		if (typeTask == 1)
 		{
 			GaInAllGraph  data = dynamic_cast<GaInAllGraph&>(elem);
-			string result = "'" + vector_to_string(data.res_population) + "'";
+			string result = "'" + vector_to_string(data.res_population, true) + "'";
 			if (data.type == 1)
 			{
 				command = "INSERT INTO public.gainallgraph( id_task, vertex, edge, \"time\", sizenewpopulation, path, lengthpath, id_algorithm, persent, count) VALUES( 1 ," + to_string(G.n) + " , " +
@@ -54,7 +54,7 @@ public:
 		else if (typeTask == 2)
 		{
 			GaBetweenVertex  data = dynamic_cast<GaBetweenVertex&>(elem);
-			string result = "'" + vector_to_string(data.res_population) + "'";
+			string result = "'" + vector_to_string(data.res_population,false) + "'";
 			va_list ap;
 			va_start(ap, nParamCount);
 			int n = va_arg(ap, int);
@@ -72,7 +72,7 @@ public:
 			va_start(ap, nParamCount);
 			int n = va_arg(ap, int);
 			va_end(ap);
-			string result = "'" + vector_to_string(data.res_population) + "'";
+			string result = "'" + vector_to_string(data.res_population, true) + "'";
 			command = "INSERT INTO public.gawithweight( id_task, vertex, edge, \"time\", sizenewpopulation, path, lengthpath, \"probMutation\" , numstep, count) VALUES( 3 ," + to_string(G.n) + " , " + to_string(G.m) + " , " +
 				to_string(data.time1) + " , " + to_string(data.sizeStartPopulation) + " , " + result + " , "
 			+ to_string(data.resWeigth) + " , " + to_string(data.probabilityMutation) + " , " + to_string(n) + " , " + to_string(data.res_population.size()) + ")";
@@ -88,7 +88,7 @@ public:
 	void error(string error);
 	DatabaseWriter(){};
 
-	string vector_to_string(vector<vector<long long>>vec)
+	string vector_to_string(vector<vector<long long>>vec, bool zn)
 	{
 		string res = "";
 
@@ -96,7 +96,8 @@ public:
 		{
 			for (size_t j = 0; j < vec[i].size() - 1; j++)
 			{
-				res = res + "(" + to_string(vec[i][j] + 1) + "," + to_string(vec[i][j + 1]+1) + ")";
+				
+				res = res + "(" + ((zn == false) ? to_string(vec[i][j]) : to_string(vec[i][j] + 1)) + "," + ((zn == false) ? to_string(vec[i][j + 1]) : to_string(vec[i][j + 1] + 1)) + ")";
 			}
 			if (i != vec.size() - 1) res = res + " ; ";
 		}
